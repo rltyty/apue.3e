@@ -55,6 +55,7 @@ dkms.conf
 # My personal ignore files other than C.gitignore
 # vim
 .*.swp
+.cache/
 
 # project files
 .cproject
@@ -69,3 +70,4 @@ tags
 tmp/
 Debug/
 Release/
+

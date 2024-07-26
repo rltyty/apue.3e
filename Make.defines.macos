@@ -6,14 +6,25 @@
 CC=gcc
 COMPILE.c=$(CC) $(CFLAGS) $(CPPFLAGS) -c
 LINK.c=$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
-LDFLAGS=
+LDFLAGS=-L$(ROOT)/lib
 LDDIR=-L$(ROOT)/lib
-LDLIBS=$(LDDIR) -lapue $(EXTRALIBS)
-CFLAGS=-ansi -I$(ROOT)/include -Wall -DMACOS -D_DARWIN_C_SOURCE $(EXTRA)
+LDLIBS=-lapue $(EXTRALIBS)
+#CFLAGS=-ansi -I$(ROOT)/include -Wall -DMACOS -D_DARWIN_C_SOURCE $(EXTRA)
+CFLAGS=-std=c11 -I$(ROOT)/include -Wall -DMACOS -D_DARWIN_C_SOURCE $(EXTRA)
 RANLIB=ranlib
 AR=ar
 AWK=awk
 LIBAPUE=$(ROOT)/lib/libapue.a
 
+# Debug and Release cflags
+DBGCFLAGS = -O0 -g
+CFLAGS.Debug = $(CFLAGS) $(DBGCFLAGS)
+RELCFLAGS = -O3
+CFLAGS.Release = $(CFLAGS) $(RELCFLAGS)
+
+# Default
+BUILD = Release
+
 # Common temp files to delete from each directory.
 TEMPFILES=core core.* *.o temp.* *.out
+
