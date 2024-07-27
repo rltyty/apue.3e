@@ -53,6 +53,10 @@ dkms.conf
 
 
 # My personal ignore files other than C.gitignore
+
+# APUE special
+!*.modified
+
 # vim
 .*.swp
 .cache/
