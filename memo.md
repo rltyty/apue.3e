@@ -2,7 +2,7 @@
 
     make clean; bear -- make
 
-## generate .clang-foramt [2]
+## generate .clang-format [2]
 
     clang-format -style=llvm -dump-config > .clang-format
 
