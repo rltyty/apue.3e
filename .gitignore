@@ -75,3 +75,6 @@ tmp/
 Debug/
 Release/
 
+# clangd format and compile info
+compile_commands.json
+
