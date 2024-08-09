@@ -1,8 +1,8 @@
-#include "apue.h"
 #include <assert.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
+#include "apue.h"
 
 void test_dup(void);
 void test_dup_open(void);
