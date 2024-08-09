@@ -1,6 +1,8 @@
 #include "apue.h"
 #ifdef SOLARIS
 #include <sys/mkdev.h>
+#elif defined(LINUX)
+#include <sys/sysmacros.h>
 #endif
 
 int
