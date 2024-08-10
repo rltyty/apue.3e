@@ -1,5 +1,6 @@
 #include "apue.h"
 #include <sys/wait.h>
+#pragma clang diagnostic ignored "-Wdivision-by-zero"
 
 int
 main(void)

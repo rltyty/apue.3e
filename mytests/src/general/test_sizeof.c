@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdio.h>
+#pragma clang diagnostic ignored "-Wsizeof-array-decay"
 
 int main(void)
 {
