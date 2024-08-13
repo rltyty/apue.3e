@@ -137,7 +137,7 @@ void print_sep(void) { printf("===================\n"); }
 /*
  * Debian 12 64-bit
  *
-❯ ./Release/fileio/test_dup
+> ./Release/fileio/test_dup
 getdtablesize() is deprecated, sysconf(_SC_OPEN_MAX)=1024
 dup(1)=3
 dup(3)=4
@@ -168,6 +168,42 @@ open [/dev/fd/14] with O_RDONLY succeeded, fd=15.
 fnctl(15, F_GETFL)=32768 & O_ACCMODE = 0
 open [/dev/fd/14] with O_RDWR succeeded, fd=16.
 fnctl(16, F_GETFL)=32770 & O_ACCMODE = 2
+ *
+ *
+ * Raspbian Pi OS 11 64-bit
+ *
+> ./Release/fileio/test_dup 
+getdtablesize() is deprecated, sysconf(_SC_OPEN_MAX)=1024
+dup(1)=3
+dup(3)=4
+dup2(4, 6)=6
+dup(6)=5
+fnctl(STDIN_FILENO, F_GETFL)=1026 & O_ACCMODE = 2
+fnctl(STDOUT_FILENO, F_GETFL)=1026 & O_ACCMODE = 2
+fnctl(5, F_GETFL)=1026 & O_ACCMODE = 2
+===================
+open [/dev/fd/0] with O_RDONLY succeeded, fd=7.
+fnctl(7, F_GETFL)=0 & O_ACCMODE = 0
+open [/dev/fd/0] with O_RDWR succeeded, fd=8.
+fnctl(8, F_GETFL)=2 & O_ACCMODE = 2
+===================
+open [/dev/fd/1] with O_RDONLY succeeded, fd=9.
+fnctl(9, F_GETFL)=0 & O_ACCMODE = 0
+open [/dev/fd/1] with O_RDWR succeeded, fd=10.
+fnctl(10, F_GETFL)=2 & O_ACCMODE = 2
+===================
+open: ./data/fileio/file1 with O_RDWR, fd=11
+open [/dev/fd/11] with O_RDONLY succeeded, fd=12.
+fnctl(12, F_GETFL)=0 & O_ACCMODE = 0
+open [/dev/fd/11] with O_RDWR succeeded, fd=13.
+fnctl(13, F_GETFL)=2 & O_ACCMODE = 2
+===================
+open: ./data/fileio/file1 with O_RDONLY, fd=14
+open [/dev/fd/14] with O_RDONLY succeeded, fd=15.
+fnctl(15, F_GETFL)=0 & O_ACCMODE = 0
+open [/dev/fd/14] with O_RDWR succeeded, fd=16.
+fnctl(16, F_GETFL)=2 & O_ACCMODE = 2
+ *
  *
  * macOS 12.7 64-bit
  *
