@@ -4,8 +4,13 @@ ROOT=../../../..
 PLATFORM=$(shell $(ROOT)/systype.sh)
 include $(ROOT)/Make.defines.$(PLATFORM)
 
-all: $(LIBAPUE) setfl.o
-	mkdir -p ../../../tmp && cp -r ../../../data/fileio ../../../tmp/
+LDFLAGS		= -L$(ROOT)/librlt
+LDLIBS		= -lrltapue
+
+OBJS		= setfl.o
+all: $(LIBRLTAPUE) $(OBJS)
 
 clean:
-	$(RM) -r ../../../tmp/fileio
+	$(RM) -f $(OBJS)
+
+include $(ROOT)/Make.librltapue.inc

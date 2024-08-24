@@ -1,5 +1,7 @@
-#include "apue.h"
+#include "rltapue.h"
 #include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 void test_arg(int argc, char *argv[]);
@@ -20,7 +22,7 @@ int main(int argc, char *argv[]) {
 
 void test_arg(int argc, char *argv[]) {
   if (argc == 1)
-    err_quit("usage: test_misc <any arg>");
+    my_perror("usage: test_misc <any arg>");
 }
 
 void test_posix_version() {

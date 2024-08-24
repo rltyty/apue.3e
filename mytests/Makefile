@@ -5,6 +5,9 @@ PLATFORM = $(shell $(ROOT)/systype.sh)
 include $(ROOT)/Make.defines.$(PLATFORM)
 include ./exclude.inc
 
+LDFLAGS		= -L$(ROOT)/librlt
+LDLIBS		= -lrltapue
+
 # add "-E " option prefix of `fd` to each excluded dir defined in exclude.inc
 FD_EXCLUDE_DIRS := $(addprefix -E , $(EXCLUDE_DIRS))
 
@@ -22,9 +25,9 @@ BINS := $(addprefix $(BUILD)/, $(BINS))
 # sub make
 SUB = sub
 
-.PHONY: clean test all msg0 $(BUILD) $(SUB) msg1
+.PHONY: clean test all msg0 $(BUILD) $(SUB) msg1 cpdata
 
-all: msg0 $(BUILD) msg1
+all: msg0 cpdata $(BUILD) msg1
 
 msg0:
 	@printf "Start building [32m[%s][m\n" $(BUILD)
@@ -33,10 +36,14 @@ msg0:
 
 msg1:
 	@printf "Build finished [32m[%s][m.\n\n" $(BUILD)
+
+cpdata:
+	mkdir -p tmp && cp -r data/ tmp/
+
 ############################################################
 $(BUILD): $(BINS) $(SUB)
 
-$(BUILD)/%: src/%.c $$(@D)/.f $(LIBAPUE)
+$(BUILD)/%: src/%.c $$(@D)/.f $(LIBRLTAPUE)
 	$(CC) $(CFLAGS.$(BUILD)) -o $@ $< $(LDFLAGS) $(LDLIBS)
 ############################################################
 .PRECIOUS: %/.f # prevent the deletion of the target
@@ -50,18 +57,19 @@ $(SUB):
 		make BUILD=$(BUILD) -C $$dir; \
 	done
 ############################################################
-
 clean:
 	$(RM) -r Release Debug release debug
 	for dir in $(shell fd $(SUB)); do \
 		make -C $$dir clean; \
 	done
+	$(RM) -r tmp
 
 # find . -name '*.dSYM' -print0 | xargs -0 rm -rf;
 #	cd lib  && $(MAKE) -f Makefile clean || exit 1;
 ############################################################
-
-include $(ROOT)/Make.libapue.inc
+test:
+############################################################
+include $(ROOT)/Make.librltapue.inc
 
 # NOTE:
 # Run without echoing commands by

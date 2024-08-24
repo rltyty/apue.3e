@@ -1,6 +1,7 @@
-#include "apue.h"
+#include "rltapue.h"
 #include <errno.h>
 #include <limits.h>
+#include <unistd.h>
 
 #ifdef OPEN_MAX
 static long openmax = OPEN_MAX;
@@ -17,7 +18,7 @@ long my_open_max(void) {
           if (errno == 0)
               openmax = OPEN_MAX_GUESS;
           else
-            err_sys("sysconf error for _SC_OPEN_MAX");
+            my_perror("sysconf error for _SC_OPEN_MAX");
       }
 
   }

@@ -1,9 +1,8 @@
-#include "apue.h"
+#include "rltapue.h"
 #include <assert.h>
 #include <fcntl.h>
+#include <stdio.h>
 #include <unistd.h>
-/* #include <stdio.h> */
-/* #include <unistd.h> */
 
 void test_dup(void);
 void test_dup_open_dev_fd_oflags();
@@ -76,7 +75,7 @@ void test_dup_open_dev_fd_oflags() {
   print_sep();
 
   if ((fd = open("./data/fileio/file1", O_RDWR)) < 0) {
-    err_msg("open file1 failed.");
+    perror("open file1 failed.");
   } else {
     printf("open: ./data/fileio/file1 with O_RDWR, fd=%d\n", fd);
   }
@@ -85,7 +84,7 @@ void test_dup_open_dev_fd_oflags() {
   print_sep();
 
   if ((fd = open("./data/fileio/file1", O_RDONLY)) < 0) {
-    err_msg("open file1 failed.");
+    perror("open file1 failed.");
   } else {
     printf("open: ./data/fileio/file1 with O_RDONLY, fd=%d\n", fd);
   }
@@ -94,7 +93,7 @@ void test_dup_open_dev_fd_oflags() {
 
 int get_dev_fd_path(char **path, int fd) {
   if (asprintf(path, "/dev/fd/%d", fd) == -1) {
-    err_msg("asprintf: failed to allocate space for path.");
+    perror("asprintf: failed to allocate space for path.");
     return -1;
   }
   return 0;
@@ -107,9 +106,9 @@ void open_dev_fd_rdonly_rdwr(int fd) {
     if ((newfd = open(path, O_RDONLY)) < 0) {
       char *msg;
       if (asprintf(&msg, "open [%s] with O_RDONLY failed.\n", path) == -1) {
-        err_msg("asprintf: failed to allocate space for msg.");
+        perror("asprintf: failed to allocate space for msg.");
       }
-      err_sys(msg);
+      perror(msg);
     } else {
       printf("open [%s] with O_RDONLY succeeded, fd=%d.\n", path, newfd);
       int fl = fcntl(newfd, F_GETFL);
@@ -120,9 +119,9 @@ void open_dev_fd_rdonly_rdwr(int fd) {
     if ((newfd = open(path, O_RDWR)) < 0) {
       char *msg;
       if (asprintf(&msg, "open [%s] with O_RDWR failed.\n", path) == -1) {
-        err_msg("asprintf: failed to allocate space for msg.");
+        perror("asprintf: failed to allocate space for msg.");
       }
-      err_sys(msg);
+      perror(msg);
     } else {
       printf("open [%s] with O_RDWR succeeded, fd=%d.\n", path, newfd);
       int fl = fcntl(newfd, F_GETFL);
@@ -172,7 +171,7 @@ fnctl(16, F_GETFL)=32770 & O_ACCMODE = 2
  *
  * Raspbian Pi OS 11 64-bit
  *
-> ./Release/fileio/test_dup 
+> ./Release/fileio/test_dup
 getdtablesize() is deprecated, sysconf(_SC_OPEN_MAX)=1024
 dup(1)=3
 dup(3)=4

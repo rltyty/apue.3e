@@ -29,3 +29,6 @@ BUILD = Release
 # Common temp files to delete from each directory.
 TEMPFILES=core core.* *.o temp.* *.out
 
+# My lib
+LIBRLTAPUE=$(ROOT)/librlt/librltapue.a
+
