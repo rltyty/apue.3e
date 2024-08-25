@@ -18,16 +18,14 @@ AWK=awk
 LIBAPUE=$(ROOT)/lib/libapue.a
 
 # Debug and Release cflags
-DBGCFLAGS = -O0 -g
-CFLAGS.Debug = $(CFLAGS) $(DBGCFLAGS)
-RELCFLAGS = -O3
-CFLAGS.Release = $(CFLAGS) $(RELCFLAGS)
+CFLAGS.Debug = -O0 -g
+CFLAGS.Release = -O3
 
 # Default
 BUILD = Release
 
 # Common temp files to delete from each directory.
-TEMPFILES=core core.* *.o temp.* *.out
+TEMPFILES=core core.* *.o temp.* *.out *.dSYM
 
 # My lib
 LIBRLTAPUE=$(ROOT)/librlt/librltapue.a

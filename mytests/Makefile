@@ -7,6 +7,7 @@ include ./exclude.inc
 
 LDFLAGS		= -L$(ROOT)/librlt
 LDLIBS		= -lrltapue
+CFLAGS		+= $(CFLAGS.$(BUILD))
 
 # add "-E " option prefix of `fd` to each excluded dir defined in exclude.inc
 FD_EXCLUDE_DIRS := $(addprefix -E , $(EXCLUDE_DIRS))
@@ -44,7 +45,7 @@ cpdata:
 $(BUILD): $(BINS) $(SUB)
 
 $(BUILD)/%: src/%.c $$(@D)/.f $(LIBRLTAPUE)
-	$(CC) $(CFLAGS.$(BUILD)) -o $@ $< $(LDFLAGS) $(LDLIBS)
+	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(LDLIBS)
 ############################################################
 .PRECIOUS: %/.f # prevent the deletion of the target
 %/.f:

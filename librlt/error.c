@@ -13,13 +13,13 @@ void my_perror(const char *fmt, ...) {
   fflush(NULL);
 }
 
+#ifdef test_error
 void test_my_perror(void) {
   my_perror("Test from test_my_perror()");
   my_perror("My favourite football player: %s, football team: %s",
       "Lionel Messi", "Argentina");
 }
 
-#ifdef test_error
 int main(void) {
   test_my_perror();
   return 0;

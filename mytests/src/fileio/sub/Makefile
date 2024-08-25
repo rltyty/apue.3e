@@ -6,11 +6,13 @@ include $(ROOT)/Make.defines.$(PLATFORM)
 
 LDFLAGS		= -L$(ROOT)/librlt
 LDLIBS		= -lrltapue
+CFLAGS		+= $(CFLAGS.$(BUILD))
+
 
 OBJS		= setfl.o
 all: $(LIBRLTAPUE) $(OBJS)
 
 clean:
-	$(RM) -f $(OBJS)
+	$(RM) -r $(TEMPFILES)
 
 include $(ROOT)/Make.librltapue.inc
