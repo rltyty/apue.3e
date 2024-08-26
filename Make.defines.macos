@@ -24,9 +24,12 @@ CFLAGS.Release = -O3
 # Default
 BUILD = Release
 
+# Dynamic lib extension
+DYNLIB.EXT = dylib
+
 # Common temp files to delete from each directory.
 TEMPFILES=core core.* *.o temp.* *.out *.dSYM
 
 # My lib
-LIBRLTAPUE=$(ROOT)/librlt/librltapue.a
-
+LIBRLTAPUE=librltapue
+SHARED=N

@@ -1,2 +1,2 @@
 $(LIBRLTAPUE):
-	(cd $(ROOT)/librlt && $(MAKE))
+	(cd $(ROOT)/librlt && $(MAKE) BUILD=$(BUILD) SHARED=$(SHARED))

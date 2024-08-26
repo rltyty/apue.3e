@@ -4,24 +4,49 @@
 # `make test` or `make test BUILD=Debug` to build unit test executables in
 # either mode.
 
-ROOT=..
-PLATFORM=$(shell $(ROOT)/systype.sh)
+# Environment
+ROOT		= ..
+PLATFORM	= $(shell $(ROOT)/systype.sh)
 include $(ROOT)/Make.defines.$(PLATFORM)
+SHARED		= N
+VERSION		= 1
 
-LIBMISC		= librltapue.a
-OBJS		= error.o openmax.o
-TESTBINS	= error openmax
+# ld
 LDFLAGS		= -L$(ROOT)/librlt
 LDLIBS		= -lrltapue
 
-CFLAGS		+= $(CFLAGS.$(BUILD))	# BUILD: Release(default), Debug
+# static library
+LIBRLTAPUE.S	= $(LIBRLTAPUE).a
+# dynamic shared library
+LIBRLTAPUE.D	= $(LIBRLTAPUE).$(DYNLIB.EXT)
 
-.PHONY: all clean test
+# clang/gcc, CFLAGS
+ifneq ($(BUILD), Release)
+ifneq ($(BUILD), Debug)
+$(error Invalid BUILD value: $(BUILD), Release/Debug expected.)
+endif
+endif
+CFLAGS		+= $(CFLAGS.$(BUILD))
 
-all:	$(LIBMISC)
+# targets
+SRCS		= error.c openmax.c
+OBJS		= $(SRCS:.c=.o)
+TESTBINS	= $(SRCS:.c=)
+ifeq ($(SHARED), Y)
+LIBTARGET	= $(LIBRLTAPUE.D).$(VERSION)
+else
+LIBTARGET	= $(LIBRLTAPUE.S)
+endif
 
-$(LIBMISC):	$(OBJS)
-	$(AR) rcs $(LIBMISC) $?
+all:	$(LIBTARGET)
+
+$(LIBRLTAPUE.S): $(OBJS)
+	$(AR) rcs -o $@ $?
+
+$(LIBRLTAPUE.D).$(VERSION):
+	$(CC) $(CFLAGS) -fPIC -c $(SRCS)
+	$(CC) -shared -o $@ $(OBJS)
+	ln -sf $@ $(LIBRLTAPUE.D)
 
 test: $(TESTBINS)
 
@@ -29,17 +54,17 @@ test: $(TESTBINS)
 #   When compile with debug information and without optimization,
 #   i.e. `-g -O0`, we need to provide complete information for the
 #   linker to locate symbols like functions in other source files
+#   On macOS, when compile Release version, `LDFLAGS, LDLIBS` could
+#   be omitted. It will search necessary dependences like functions
+#   for you. On Linux, no matter Release or Debug build, complete
+#   information are always need to be provided.
 
-$(TESTBINS): $(LIBMISC)
-	@if [ "$(BUILD)" = "Release" ]; \
-	then $(CC) -Dtest_$@ $(CFLAGS) $@.c -o $@ ; \
-	elif [ $(BUILD) = "Debug" ]; \
-	then $(CC) -Dtest_$@ $(CFLAGS) $@.c -o $@ $(LDFLAGS) $(LDLIBS) ; \
-	else printf "Wrong build mode: %s." "$(BUILD)" ; \
-	fi
+$(TESTBINS): $(LIBTARGET)
+	$(CC) -Dtest_$@ $(CFLAGS) $@.c -o $@ $(LDFLAGS) $(LDLIBS)
 
 clean:
-	$(RM) $(LIBMISC) $(TESTBINS)
+	$(RM) $(TESTBINS) $(LIBRLTAPUE.S) \
+		$(LIBRLTAPUE.D) $(LIBRLTAPUE.D).$(VERSION)
 	$(RM) -r $(TEMPFILES)
 
-include $(ROOT)/Make.librltapue.inc
+.PHONY: all clean test
