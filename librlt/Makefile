@@ -41,9 +41,11 @@ endif
 all:	$(LIBTARGET)
 
 $(LIBRLTAPUE.S): $(OBJS)
-	$(AR) rcs -o $@ $?
+	@echo "Creating static library $@"
+	$(AR) rcs $@ $?
 
 $(LIBRLTAPUE.D).$(VERSION):
+	@echo "Creating dynamic shared library $@"
 	$(CC) $(CFLAGS) -fPIC -c $(SRCS)
 	$(CC) -shared -o $@ $(OBJS)
 	ln -sf $@ $(LIBRLTAPUE.D)
