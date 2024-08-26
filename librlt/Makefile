@@ -1,8 +1,7 @@
 # Makefile for rltapue library.
 #
-# `make` or `make BUILD=Debug` to build library in Release or Debug mode.
-# `make test` or `make test BUILD=Debug` to build unit test executables in
-# either mode.
+# `make [BUILD=Debug|Release] [SHARED=Y|N]
+# `make test [BUILD=Debug|Release] [SHARED=Y|N]
 
 # Environment
 ROOT		= ..

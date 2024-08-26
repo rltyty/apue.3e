@@ -1,3 +1,8 @@
+# Makefile for mytests.
+#
+# make [BUILD=Debug|Release] [SHARED=Y|N]
+# NOTE: `SHARED=Y` means build tests against dynamic shared librlapue
+
 .SECONDEXPANSION:
 ROOT = ..
 PLATFORM = $(shell $(ROOT)/systype.sh)
@@ -25,8 +30,6 @@ BINS := $(addprefix $(BUILD)/, $(BINS))
 
 # sub make
 SUB = sub
-
-.PHONY: clean test all msg0 $(BUILD) $(SUB) msg1 cpdata
 
 all: msg0 cpdata $(BUILD) msg1
 
@@ -72,6 +75,7 @@ test:
 ############################################################
 include $(ROOT)/Make.librltapue.inc
 
+.PHONY: clean test all msg0 $(BUILD) $(SUB) msg1 cpdata
 # NOTE:
 # Run without echoing commands by
 # make -s
