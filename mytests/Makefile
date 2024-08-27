@@ -57,19 +57,16 @@ $(BUILD)/%: src/%.c $$(@D)/.f $(LIBRLTAPUE)
 ############################################################
 $(SUB):
 	@printf "\nMaking mytests.%ss\n" $(SUB)
-	for dir in $(shell fd $(SUB)); do \
-		make BUILD=$(BUILD) -C $$dir; \
+	@for dir in $(shell fd $(SUB)); do \
+		echo "Making $$dir" && make BUILD=$(BUILD) -C $$dir; \
 	done
 ############################################################
 clean:
 	$(RM) -r Release Debug release debug
-	for dir in $(shell fd $(SUB)); do \
-		make -C $$dir clean; \
+	@for dir in $(shell fd $(SUB)); do \
+		echo "Making clean $$dir" && make -C $$dir clean; \
 	done
 	$(RM) -r tmp
-
-# find . -name '*.dSYM' -print0 | xargs -0 rm -rf;
-#	cd lib  && $(MAKE) -f Makefile clean || exit 1;
 ############################################################
 test:
 ############################################################
