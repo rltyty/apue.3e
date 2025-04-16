@@ -28,7 +28,7 @@ BUILD = Release
 DYNLIB.EXT = so
 
 # Common temp files to delete from each directory.
-TEMPFILES=core core.* *.o temp.* *.out
+TEMPFILES=core core.* *.o temp.* *.out tmp/
 
 # My lib
 LIBRLTAPUE=librltapue

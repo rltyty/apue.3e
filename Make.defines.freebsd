@@ -16,4 +16,4 @@ AWK=awk
 LIBAPUE=$(ROOT)/lib/libapue.a
 
 # Common temp files to delete from each directory.
-TEMPFILES=core core.* *.o temp.* *.out
+TEMPFILES=core core.* *.o temp.* *.out tmp/

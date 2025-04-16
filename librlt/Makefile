@@ -28,7 +28,7 @@ endif
 CFLAGS		+= $(CFLAGS.$(BUILD))
 
 # targets
-SRCS		= error.c openmax.c
+SRCS		= error.c openmax.c setfl.c profiling.c
 OBJS		= $(SRCS:.c=.o)
 TESTBINS	= $(SRCS:.c=)
 ifeq ($(SHARED), Y)
@@ -50,7 +50,7 @@ $(LIBRLTAPUE.D).$(VERSION):
 	ln -sf $@ $(LIBRLTAPUE.D)
 
 test: $(TESTBINS)
-
+	mkdir -p tmp && cp -r data/ tmp/
 # Note:
 #   When compile with debug information and without optimization,
 #   i.e. `-g -O0`, we need to provide complete information for the

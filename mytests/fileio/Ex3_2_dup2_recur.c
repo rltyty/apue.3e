@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 /* Recursive version */
@@ -57,8 +58,8 @@ int mydup2(int fd, int newfd) {
   return recur(dup(fd), newfd);
 }
 
-void test_mydup2() {
-  int fd = open("data/fileio/test_my_dup2", O_RDONLY);
+void test_mydup2(int fdc) {
+  int fd = open("tmp/data/fileio/test_my_dup2", O_RDONLY);
   if (fd == -1)
     perror("Error occured when opening test_my_dup2");
   printf("Open a test file, fd=%d\n", fd);
@@ -86,11 +87,18 @@ void test_mydup2() {
   assert(255 == mydup2(fd, 255));
   printf("mydup2(%d, %d)=%d\n", fd, 255, 255);
 
-  /* assert(255 == mydup2(fd, 256)); failed, cause OPEN_MAX = 256 on macOS */
-  printf("5 Tests passed.\n");
+  assert(256 == mydup2(fd, 256)); /* failed, cause OPEN_MAX = 256 on macOS */
+  printf("mydup2(%d, %d)=%d\n", fd, 256, 256);
+  assert(fdc == mydup2(fd, fdc));
+  printf("mydup2(%d, %d)=%d\n", fd, fdc, fdc);
+  printf("7 Tests passed.\n");
 }
 
-int main(void) {
-  test_mydup2();
+int main(int argc, char *argv[]) {
+  int fdc = 0;
+  if (argc > 1) {
+    fdc = atoi(argv[1]);
+  }
+  test_mydup2(fdc);
   return 0;
 }

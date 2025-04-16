@@ -6,7 +6,7 @@
 
 int main(void)
 {
-  char *path = "tmp/fileio/3_6.dat";
+  char *path = "tmp/data/fileio/3_6.dat";
   int fd = -1;
   if ((fd = open(path, O_RDWR|O_APPEND)) == -1) {
     my_perror("open file [%s] failed.", path);

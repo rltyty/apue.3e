@@ -14,4 +14,10 @@ void my_perror(const char*, ...);
 #define OPEN_MAX_GUESS 256
 long open_max(void);
 
+/* flags are file status flags to turn on */
+void set_fl(int, int);
+
+/* profiling running time */
+void timeit(void(*)(), int);
+
 #endif /* _RLTAPUE_H */

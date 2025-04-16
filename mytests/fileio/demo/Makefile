@@ -1,6 +1,6 @@
 .SECONDEXPANSION:
 .PHONY: clean all test
-ROOT=../../../..
+ROOT=../../..
 PLATFORM=$(shell $(ROOT)/systype.sh)
 include $(ROOT)/Make.defines.$(PLATFORM)
 
@@ -9,7 +9,7 @@ LDLIBS		= -lrltapue
 CFLAGS		+= $(CFLAGS.$(BUILD))
 
 
-OBJS		= setfl.o
+OBJS		= stub.o
 all: $(LIBRLTAPUE) $(OBJS)
 
 clean:

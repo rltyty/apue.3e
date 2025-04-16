@@ -22,7 +22,7 @@ off_t fsize(int);
  */
 int main(void) {
   int fd;
-  char *fname = "tmp/fileio/seek.dat";
+  char *fname = "tmp/data/fileio/seek.dat";
   char wbuf[BUFFSIZE];
   char wbuf2[BUFFSIZE];
   strcpy(wbuf, "hello, world!");

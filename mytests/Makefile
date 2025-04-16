@@ -1,37 +1,45 @@
 # Makefile for mytests.
 #
 # make [BUILD=Debug|Release] [SHARED=Y|N]
-# NOTE: `SHARED=Y` means build tests against dynamic shared librlapue
+# NOTE: `SHARED=Y` means build tests against dynamic shared librltapue
 
 .SECONDEXPANSION:
 ROOT = ..
 PLATFORM = $(shell $(ROOT)/systype.sh)
 
 include $(ROOT)/Make.defines.$(PLATFORM)
-include ./exclude.inc
 
 LDFLAGS		= -L$(ROOT)/librlt
 LDLIBS		= -lrltapue
 CFLAGS		+= $(CFLAGS.$(BUILD))
 
-# add "-E " option prefix of `fd` to each excluded dir defined in exclude.inc
-FD_EXCLUDE_DIRS := $(addprefix -E , $(EXCLUDE_DIRS))
+# source files to be excluded from the main build
+# add "-E " option of `fd` command to each excluded file or directory
+include ./mytests.inc
+MAIN_SRC_EXCLUDED := $(addprefix -E , $(EXCLUDE_DIRS))
+MAIN_SRC_EXCLUDED += $(addprefix -E , $(SINGLETONS))
 
-# find all c sources using `fd` under "src/"
-SRCS := $(shell fd -e c $(FD_EXCLUDE_DIRS) . src)
-# NOTE: = is recursive expansion, meaning
-# a = $(b) b = $(c) c = d, then $(a) reflects d.
-# So = cannot be used to self-assign like cflags = $(cflags) -g3, use :=
-# instead, cflags := $(cflags) -g3
-SRCS := $(patsubst src/%.c, %.c, $(SRCS))
+# # find all c sources using `fd` under "src/"
+# SRCS := $(shell fd -e c $(MAIN_SRC_EXCLUDED) . src)
+# SRCS := $(patsubst src/%.c, %.c, $(SRCS))
+#
+# Now for easy debug configuration, let's flatten the sources by removal
+# of the top level "src" folder.
+SRCS := $(shell fd -e c $(MAIN_SRC_EXCLUDED))
 SRCS := $(filter-out $(EXCLUDE), $(SRCS))
 BINS := $(patsubst %.c, %, $(SRCS))
 BINS := $(addprefix $(BUILD)/, $(BINS))
 
-# sub make
-SUB = sub
+# NOTE: `=` does recursive expansion, meaning
+# if `a = $(b) b = $(c) c = d`, then `$(a)` reflects `d`.
+# Thus, `=` cannot be used to self-assignment, like `CFLAGS = $(CFLAGS) -g3`,
+# use `:=` instead, e.g. `CFLAGS := $(CFLAGS) -g3`
 
 all: msg0 cpdata $(BUILD) msg1
+
+cpdata:
+	mkdir -p tmp && cp -r data/ tmp/
+
 
 msg0:
 	@printf "Start building [32m[%s][m\n" $(BUILD)
@@ -41,13 +49,11 @@ msg0:
 msg1:
 	@printf "Build finished [32m[%s][m.\n\n" $(BUILD)
 
-cpdata:
-	mkdir -p tmp && cp -r data/ tmp/
-
 ############################################################
-$(BUILD): $(BINS) $(SUB)
+$(BUILD): $(BINS) $(SINGLETONS)
 
-$(BUILD)/%: src/%.c $$(@D)/.f $(LIBRLTAPUE)
+# $(BUILD)/%: src/%.c $$(@D)/.f $(LIBRLTAPUE)
+$(BUILD)/%: %.c $$(@D)/.f $(LIBRLTAPUE)
 	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(LDLIBS)
 ############################################################
 .PRECIOUS: %/.f # prevent the deletion of the target
@@ -55,24 +61,24 @@ $(BUILD)/%: src/%.c $$(@D)/.f $(LIBRLTAPUE)
 	@mkdir -p $(dir $@)
 	@touch $@
 ############################################################
-$(SUB):
-	@printf "\nMaking mytests.%ss\n" $(SUB)
-	@for dir in $(shell fd $(SUB)); do \
+$(SINGLETONS):
+	@printf "\nMaking %s in mytests...\n" $(SINGLETONS)
+	@for dir in $(shell fd $(SINGLETONS)); do \
 		echo "Making $$dir" && make BUILD=$(BUILD) -C $$dir; \
 	done
 ############################################################
 clean:
 	$(RM) -r Release Debug release debug
-	@for dir in $(shell fd $(SUB)); do \
+	@for dir in $(shell fd $(SINGLETONS)); do \
 		echo "Making clean $$dir" && make -C $$dir clean; \
 	done
-	$(RM) -r tmp
+	$(RM) -r $(TEMPFILES)
 ############################################################
 test:
 ############################################################
 include $(ROOT)/Make.librltapue.inc
 
-.PHONY: clean test all msg0 $(BUILD) $(SUB) msg1 cpdata
+.PHONY: clean test all msg0 $(BUILD) $(SINGLETONS) msg1 cpdata
 # NOTE:
 # Run without echoing commands by
 # make -s

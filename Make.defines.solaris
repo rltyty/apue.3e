@@ -17,4 +17,4 @@ LIBAPUE=$(ROOT)/lib/libapue.a
 NAMEMAX=-DNAME_MAX=_XOPEN_NAME_MAX
 
 # Common temp files to delete from each directory.
-TEMPFILES=core core.* *.o temp.* *.out
+TEMPFILES=core core.* *.o temp.* *.out tmp/

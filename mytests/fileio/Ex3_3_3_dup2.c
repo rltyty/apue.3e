@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 void test_fd3() {
-  char *path = "data/fileio/file1";
+  char *path = "tmp/data/fileio/file1";
   int fd = 0;
   if ((fd = open(path, O_RDWR)) == -1) {
     my_perror("Error occured when open(%s, O_RDWR)", path);

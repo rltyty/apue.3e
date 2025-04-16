@@ -58,7 +58,7 @@ int mydup2(int fd, int newfd) {
 }
 
 void test_mydup2() {
-  int fd = open("data/fileio/test_my_dup2", O_RDONLY);
+  int fd = open("tmp/data/fileio/test_my_dup2", O_RDONLY);
   if (fd == -1)
     perror("Error occured when opening test_my_dup2");
   printf("Open a test file, fd=%d\n", fd);

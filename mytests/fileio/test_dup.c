@@ -73,19 +73,19 @@ void test_dup_open_dev_fd_oflags() {
   open_dev_fd_rdonly_rdwr(STDOUT_FILENO);
   print_sep();
 
-  if ((fd = open("./data/fileio/file1", O_RDWR)) < 0) {
+  if ((fd = open("tmp/data/fileio/file1", O_RDWR)) < 0) {
     perror("open file1 failed.");
   } else {
-    printf("open: ./data/fileio/file1 with O_RDWR, fd=%d\n", fd);
+    printf("open: tmp/data/fileio/file1 with O_RDWR, fd=%d\n", fd);
   }
   open_dev_fd_rdonly_rdwr(fd);
 
   print_sep();
 
-  if ((fd = open("./data/fileio/file1", O_RDONLY)) < 0) {
+  if ((fd = open("tmp/data/fileio/file1", O_RDONLY)) < 0) {
     perror("open file1 failed.");
   } else {
-    printf("open: ./data/fileio/file1 with O_RDONLY, fd=%d\n", fd);
+    printf("open: tmp/data/fileio/file1 with O_RDONLY, fd=%d\n", fd);
   }
   open_dev_fd_rdonly_rdwr(fd);
 }
@@ -155,13 +155,13 @@ fnctl(9, F_GETFL)=32768 & O_ACCMODE = 0
 open [/dev/fd/1] with O_RDWR succeeded, fd=10.
 fnctl(10, F_GETFL)=32770 & O_ACCMODE = 2
 ===================
-open: ./data/fileio/file1 with O_RDWR, fd=11
+open: tmp/data/fileio/file1 with O_RDWR, fd=11
 open [/dev/fd/11] with O_RDONLY succeeded, fd=12.
 fnctl(12, F_GETFL)=32768 & O_ACCMODE = 0
 open [/dev/fd/11] with O_RDWR succeeded, fd=13.
 fnctl(13, F_GETFL)=32770 & O_ACCMODE = 2
 ===================
-open: ./data/fileio/file1 with O_RDONLY, fd=14
+open: tmp/data/fileio/file1 with O_RDONLY, fd=14
 open [/dev/fd/14] with O_RDONLY succeeded, fd=15.
 fnctl(15, F_GETFL)=32768 & O_ACCMODE = 0
 open [/dev/fd/14] with O_RDWR succeeded, fd=16.
@@ -190,13 +190,13 @@ fnctl(9, F_GETFL)=0 & O_ACCMODE = 0
 open [/dev/fd/1] with O_RDWR succeeded, fd=10.
 fnctl(10, F_GETFL)=2 & O_ACCMODE = 2
 ===================
-open: ./data/fileio/file1 with O_RDWR, fd=11
+open: tmp/data/fileio/file1 with O_RDWR, fd=11
 open [/dev/fd/11] with O_RDONLY succeeded, fd=12.
 fnctl(12, F_GETFL)=0 & O_ACCMODE = 0
 open [/dev/fd/11] with O_RDWR succeeded, fd=13.
 fnctl(13, F_GETFL)=2 & O_ACCMODE = 2
 ===================
-open: ./data/fileio/file1 with O_RDONLY, fd=14
+open: tmp/data/fileio/file1 with O_RDONLY, fd=14
 open [/dev/fd/14] with O_RDONLY succeeded, fd=15.
 fnctl(15, F_GETFL)=0 & O_ACCMODE = 0
 open [/dev/fd/14] with O_RDWR succeeded, fd=16.
@@ -225,13 +225,13 @@ fnctl(9, F_GETFL)=65538 & O_ACCMODE = 2
 open [/dev/fd/1] with O_RDWR succeeded, fd=10.
 fnctl(10, F_GETFL)=65538 & O_ACCMODE = 2
 ===================
-open: ./data/fileio/file1 with O_RDWR, fd=11
+open: tmp/data/fileio/file1 with O_RDWR, fd=11
 open [/dev/fd/11] with O_RDONLY succeeded, fd=12.
 fnctl(12, F_GETFL)=2 & O_ACCMODE = 2
 open [/dev/fd/11] with O_RDWR succeeded, fd=13.
 fnctl(13, F_GETFL)=2 & O_ACCMODE = 2
 ===================
-open: ./data/fileio/file1 with O_RDONLY, fd=14
+open: tmp/data/fileio/file1 with O_RDONLY, fd=14
 open [/dev/fd/14] with O_RDONLY succeeded, fd=15.
 fnctl(15, F_GETFL)=0 & O_ACCMODE = 0
 open [/dev/fd/14] with O_RDWR failed.

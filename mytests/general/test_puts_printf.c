@@ -49,6 +49,6 @@ int main(int argc, char* argv[])
 
 /*
  * Ex1.
- * Profiling test_puts: 1000000 msg:[Messi]: Time used: 0.061672
- * Profiling test_printf: 1000000 msg:[Messi]: Time used: 0.061735
+ * Profiling test_puts: 1000000 msg:[Messi]: Time used: 0.063512
+ * Profiling test_printf: 1000000 msg:[Messi]: Time used: 0.115305
  */
