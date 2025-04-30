@@ -78,3 +78,6 @@ Release/
 # clangd format and compile info
 .clang-format
 compile_commands.json
+
+# glibc source
+glibc

@@ -9,7 +9,23 @@
       "args": [],
       "cwd": "${workspaceFolder}",
       "stopOnEntry": false,
-      "console": "integratedTerminal"
+      "console": "integratedTerminal",
+      "sourceMap": {
+        ".": "/usr/src/glibc/glibc-2.36"
+      }
+    },
+    {
+      "name": "Debug current C file (Singleton)",
+      "type": "codelldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/${relativeFileDirname}/${fileBasenameNoExtension}",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "stopOnEntry": false,
+      "console": "integratedTerminal",
+      "sourceMap": {
+        ".": "/usr/src/glibc/glibc-2.36"
+      }
     }
   ]
 }
