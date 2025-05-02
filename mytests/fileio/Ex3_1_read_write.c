@@ -27,19 +27,34 @@ int main(int argc, char *argv[]) {
     if (t > 0)
       bufsize = t;
   }
-
-  if (argc > 2 && strcmp(argv[2], "sync") == 0) {
-    set_fl(STDOUT_FILENO, O_SYNC);
-  }
-
   char buf[bufsize];
   int n;
+
+#ifdef __linux__
+  // Linux doesn't support modify fd flag O_SYNC on the fly. Set O_SYNC
+  // when open(2).
+  int fd;
+  char *path = "./tmp/copy.dat";
+  int oflag = O_CREAT | O_WRONLY | O_TRUNC;
+  if (argc > 2 && strcmp(argv[2], "sync") == 0)
+    oflag |= O_SYNC;
+  if ((fd = open(path, oflag)) < 0)
+    my_perror("Open file [%s] failed.", path);
+  while ((n = read(STDIN_FILENO, buf, bufsize)) > 0) {
+    if (write(fd, buf, n) != n)
+      perror("Error occurred when write file.");
+  }
+#else
+  if (argc > 2 && strcmp(argv[2], "sync") == 0)
+    set_fl(STDOUT_FILENO, O_SYNC);
+
   while ((n = read(STDIN_FILENO, buf, bufsize)) > 0) {
     if (write(STDOUT_FILENO, buf, n) != n)
       perror("Error occurred when write file.");
   }
   if (n < 0)
     perror("Error occurred when write file.");
+#endif
 }
 
 /*
@@ -49,6 +64,7 @@ dd if=/dev/random of=8mb.dat bs=4096 count=2048
 
  * Test no-sync/sync with different i/o buffer size
 
+ * On macOS:
 > /usr/bin/time ./Debug/fileio/Ex3_1_read_write 8192 < 8mb.dat > copy.dat
         0.02 real         0.00 user         0.01 sys
 > /usr/bin/time ./Debug/fileio/Ex3_1_read_write 8192 sync < 8mb.dat > copy.dat
@@ -63,4 +79,22 @@ dd if=/dev/random of=8mb.dat bs=4096 count=2048
         0.07 real         0.00 user         0.05 sys
 > /usr/bin/time ./Debug/fileio/Ex3_1_read_write 1024 sync < 8mb.dat > copy.dat
         0.49 real         0.00 user         0.29 sys
+
+ * On Linux:
+
+$ time ./Debug/fileio/Ex3_1_read_write 8192  < 8mb.dat
+real    0m0.012s user    0m0.004s sys     0m0.008s
+$ time ./Debug/fileio/Ex3_1_read_write 8192 sync < 8mb.dat
+real    0m2.405s user    0m0.012s sys     0m0.123s
+
+time ./Debug/fileio/Ex3_1_read_write 4096  < 8mb.dat
+real    0m0.014s user    0m0.000s sys     0m0.014s
+time ./Debug/fileio/Ex3_1_read_write 4096 sync < 8mb.dat
+real    0m4.615s user    0m0.005s sys     0m0.219s
+
+time ./Debug/fileio/Ex3_1_read_write 1024  < 8mb.dat
+real    0m0.033s user    0m0.008s sys     0m0.024s
+time ./Debug/fileio/Ex3_1_read_write 1024 sync < 8mb.dat
+real    0m17.105s user    0m0.028s sys     0m0.653s
+
  */
