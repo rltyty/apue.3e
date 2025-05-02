@@ -66,6 +66,7 @@ int main(void) {
 #endif
 
 // NOTE:
+// fcntl() provides for control over descriptors.
 // 1. Headers:
 // <fcntl.h>
 //   <feature.h> -- set feature as per CFLAGS: -DLINUX -D_GNU_SOURCE

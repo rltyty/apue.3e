@@ -42,27 +42,25 @@ int main(int argc, char *argv[]) {
     perror("Error occurred when write file.");
 }
 
-/* Prepare 8mb.dat
- * dd if=/dev/random of=8mb.dat bs=4096 count=2048
- * */
-
 /*
-> time ./Debug/fileio/Ex3_1_read_write 8192 < 8mb.dat > copy.dat
-./Debug/fileio/Ex3_1_read_write 8192 < 8mb.dat > copy.dat  0.00s user 0.01s
-system 64% cpu 0.020 total > time ./Debug/fileio/Ex3_1_read_write 8192 sync <
-8mb.dat > copy.dat
-./Debug/fileio/Ex3_1_read_write 8192 sync < 8mb.dat > copy.dat  0.00s user 0.03s
-system 56% cpu 0.055 total > time ./Debug/fileio/Ex3_1_read_write 4096 < 8mb.dat
-> copy.dat
-./Debug/fileio/Ex3_1_read_write 4096 < 8mb.dat > copy.dat  0.00s user 0.01s
-system 66% cpu 0.024 total > time ./Debug/fileio/Ex3_1_read_write 4096 sync <
-8mb.dat > copy.dat
-./Debug/fileio/Ex3_1_read_write 4096 sync < 8mb.dat > copy.dat  0.00s user 0.06s
-system 58% cpu 0.114 total > time ./Debug/fileio/Ex3_1_read_write 1024 < 8mb.dat
-> copy.dat
-./Debug/fileio/Ex3_1_read_write 1024 < 8mb.dat > copy.dat  0.00s user 0.04s
-system 79% cpu 0.050 total > time ./Debug/fileio/Ex3_1_read_write 1024 sync <
-8mb.dat > copy.dat
-./Debug/fileio/Ex3_1_read_write 1024 sync < 8mb.dat > copy.dat  0.01s user 0.18s
-system 51% cpu 0.371 total
+ * Prepare 8mb.dat
+
+dd if=/dev/random of=8mb.dat bs=4096 count=2048
+
+ * Test no-sync/sync with different i/o buffer size
+
+> /usr/bin/time ./Debug/fileio/Ex3_1_read_write 8192 < 8mb.dat > copy.dat
+        0.02 real         0.00 user         0.01 sys
+> /usr/bin/time ./Debug/fileio/Ex3_1_read_write 8192 sync < 8mb.dat > copy.dat
+        0.14 real         0.00 user         0.10 sys
+
+> /usr/bin/time ./Debug/fileio/Ex3_1_read_write 4096 < 8mb.dat > copy.dat
+        0.03 real         0.00 user         0.03 sys
+> /usr/bin/time ./Debug/fileio/Ex3_1_read_write 4096 sync < 8mb.dat > copy.dat
+        0.21 real         0.00 user         0.15 sys
+
+> /usr/bin/time ./Debug/fileio/Ex3_1_read_write 1024 < 8mb.dat > copy.dat
+        0.07 real         0.00 user         0.05 sys
+> /usr/bin/time ./Debug/fileio/Ex3_1_read_write 1024 sync < 8mb.dat > copy.dat
+        0.49 real         0.00 user         0.29 sys
  */
