@@ -79,11 +79,19 @@ int main(void) {
 // change the state of the O_DSYNC and O_SYNC flags. Attempts to change the
 // state of these flags are silently ignored. (See fcntl(2) man)
 
-  int ignored;
   set_fl(fd, O_SYNC);      // macOS: 0x0080, Debian: 0x101000(04010000)
+
+#ifdef __APPLE__
+  if ((val = fcntl(fd, F_GETFL, 0)) < 0)
+    perror("fcntl F_GETFL error");
+  assert(val == (O_RDWR | O_APPEND | O_SYNC)); // macOS: 0x8a (0x2|0x8|0x80)
+#elif defined(__linux__)
+  int ignored;
   if ((ignored = fcntl(fd, F_GETFL, 0)) < 0)
     perror("fcntl F_GETFL error");
   assert(val == ignored);
+#endif
+
 }
 
 #endif
