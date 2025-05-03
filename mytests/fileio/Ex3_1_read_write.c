@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
   int oflag = O_CREAT | O_WRONLY | O_TRUNC;
   if (argc > 2 && strcmp(argv[2], "sync") == 0)
     oflag |= O_SYNC;
-  if ((fd = open(path, oflag)) < 0)
+  if ((fd = open(path, oflag, 0333)) < 0)
     my_perror("Open file [%s] failed.", path);
   while ((n = read(STDIN_FILENO, buf, bufsize)) > 0) {
     if (write(fd, buf, n) != n)
@@ -52,8 +52,6 @@ int main(int argc, char *argv[]) {
     if (write(STDOUT_FILENO, buf, n) != n)
       perror("Error occurred when write file.");
   }
-  if (n < 0)
-    perror("Error occurred when write file.");
 #endif
 }
 
@@ -82,19 +80,19 @@ dd if=/dev/random of=8mb.dat bs=4096 count=2048
 
  * On Linux:
 
-$ time ./Debug/fileio/Ex3_1_read_write 8192  < 8mb.dat
-real    0m0.012s user    0m0.004s sys     0m0.008s
-$ time ./Debug/fileio/Ex3_1_read_write 8192 sync < 8mb.dat
-real    0m2.405s user    0m0.012s sys     0m0.123s
+ ❯ /usr/bin/time -f "%e real     %U user     %S sys" ./Debug/fileio/Ex3_1_read_write 8192 < 8mb.dat
+0.00 real     0.00 user     0.00 sys
+❯ /usr/bin/time -f "%e real     %U user     %S sys" ./Debug/fileio/Ex3_1_read_write 8192 sync < 8mb.dat
+2.43 real     0.00 user     0.11 sys
 
-time ./Debug/fileio/Ex3_1_read_write 4096  < 8mb.dat
-real    0m0.014s user    0m0.000s sys     0m0.014s
-time ./Debug/fileio/Ex3_1_read_write 4096 sync < 8mb.dat
-real    0m4.615s user    0m0.005s sys     0m0.219s
+❯ /usr/bin/time -f "%e real     %U user     %S sys" ./Debug/fileio/Ex3_1_read_write 4096 < 8mb.dat
+0.00 real     0.00 user     0.00 sys
+❯ /usr/bin/time -f "%e real     %U user     %S sys" ./Debug/fileio/Ex3_1_read_write 4096 sync < 8mb.dat
+4.61 real     0.00 user     0.15 sys
 
-time ./Debug/fileio/Ex3_1_read_write 1024  < 8mb.dat
-real    0m0.033s user    0m0.008s sys     0m0.024s
-time ./Debug/fileio/Ex3_1_read_write 1024 sync < 8mb.dat
-real    0m17.105s user    0m0.028s sys     0m0.653s
+❯ /usr/bin/time -f "%e real     %U user     %S sys" ./Debug/fileio/Ex3_1_read_write 1024 < 8mb.dat
+0.02 real     0.00 user     0.01 sys
+❯ /usr/bin/time -f "%e real     %U user     %S sys" ./Debug/fileio/Ex3_1_read_write 1024 sync < 8mb.dat
+17.00 real     0.02 user     0.66 sys
 
  */
