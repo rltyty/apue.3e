@@ -16,6 +16,25 @@
  *
  * User buffer size adjustment is to change the number of calls of
  * `read(2)/`write(2)`, which could affect user time.
+ *
+ * About discrepancy in real vs. sys
+ * - On macOS, the sys time increase (0.01s → 0.10s) roughly matches the
+ *   real time increase (0.02s → 0.14s)
+ * - On Linux, the sys time increase (0.008s → 0.123s) is much smaller than
+ *   the real time increase (0.012s → 2.405s)
+ *
+ * - On Linux (ext4/xfs/btrfs), O_SYNC is stricter and often bypasses more
+ *   aggressive caching layers, forcing data all the way to the physical disk.
+ *   This involves more synchronous operations (e.g., waiting for disk
+ *   acknowledgments), which significantly increases latency.
+ * - On macOS (APFS/HFS+), the O_SYNC flag ensures that data is written to
+ *   disk before the write() system call returns, but the filesystem may
+ *   still optimize this process in ways that reduce the wall-clock time
+ *   impact (e.g., leveraging the NVMe controller's write buffers or the
+ *   disk's own cache).
+ *
+ * In summary, Linux's O_SYNC is more "honest" and forces writes to disk
+ * immediately, exposing the full disk latency in real time.
  */
 
 /* .a.out [bufsize [sync]] */
