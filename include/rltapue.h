@@ -5,6 +5,10 @@
 #define push(sp, n) (*((sp)++)) = (n)
 #define pop(sp) (*--(sp))
 
+/* max and min */
+#define MAX(a, b) ((a) >= (b) ? (a) : (b))
+#define MIN(a, b) ((a) <= (b) ? (a) : (b))
+
 /* print error message */
 void my_perror(const char*, ...);
 
