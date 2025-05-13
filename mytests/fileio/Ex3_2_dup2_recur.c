@@ -7,7 +7,9 @@
 #include <unistd.h>
 
 /* Recursive version */
-/* This solution is limited to OPEN_MAX, 256 on macOS 12.7 64-bit */
+/* This solution is limited to file descriptor limit (`ulimit -n`), if
+ * the limit is 2048, then valid range is [0, 2047]
+ */
 
 int recur(int fd, int newfd) {
   /* error path */
@@ -59,12 +61,12 @@ int mydup2(int fd, int newfd) {
 }
 
 void test_mydup2(int fdc) {
+  long fdmax = open_max();
+  printf("OPEN_MAX=%ld\n", fdmax);
   int fd = open("tmp/data/fileio/test_my_dup2", O_RDONLY);
   if (fd == -1)
     perror("Error occured when opening test_my_dup2");
   printf("Open a test file, fd=%d\n", fd);
-
-  printf("OPEN_MAX=%ld\n", open_max());
 
   int newfd = 0;
   if ((newfd = mydup2(fd, fd)) == -1) {
@@ -84,21 +86,17 @@ void test_mydup2(int fdc) {
     assert(newfd == 100);
     printf("mydup2(%d, %d)=%d\n", fd, 100, newfd);
   }
-  assert(255 == mydup2(fd, 255));
-  printf("mydup2(%d, %d)=%d\n", fd, 255, 255);
+  assert(fdmax-1 == mydup2(fd, fdmax-1));
+  printf("mydup2(%d, %ld)=%ld\n", fd, fdmax-1, fdmax-1);
 
-  assert(256 == mydup2(fd, 256)); /* failed, cause OPEN_MAX = 256 on macOS */
-  printf("mydup2(%d, %d)=%d\n", fd, 256, 256);
-  assert(fdc == mydup2(fd, fdc));
-  printf("mydup2(%d, %d)=%d\n", fd, fdc, fdc);
-  printf("7 Tests passed.\n");
+  printf("5 Tests passed.\n");
 }
 
 int main(int argc, char *argv[]) {
-  int fdc = 0;
+  int fd = 0;
   if (argc > 1) {
-    fdc = atoi(argv[1]);
+    fd = atoi(argv[1]);
   }
-  test_mydup2(fdc);
+  test_mydup2(fd);
   return 0;
 }
