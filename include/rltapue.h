@@ -14,6 +14,7 @@ void my_perror(const char*, ...);
 
 /* limits and constants */
 #define MAXLINE 4096                                 /* max line length */
+#define BUFSIZE 4096
 
 #define OPEN_MAX_GUESS 256
 long open_max(void);
