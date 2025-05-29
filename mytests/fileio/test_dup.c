@@ -19,7 +19,7 @@ void test_dup(void) {
   /* int fdts = getdtablesize(); */ /* deprecated, use sysconf(_SC_OPEN_MAX) */
   long fdts = sysconf(_SC_OPEN_MAX);
 #ifdef MACOS
-  assert(256 == fdts);
+  assert(2048 == fdts);
 #elif defined LINUX
   assert(1024 == fdts);
 #endif
