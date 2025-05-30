@@ -3,6 +3,18 @@
 #include <stdio.h>
 #include <unistd.h>
 
+
+/*
+ * Differences in `open('/dev/fd/<fdN>', O_RDWR)` between on macOS and Linux:
+ * Linux treats it as opening the *original file by path*, while macOS treats
+ * it as opening the *existing open file description* with potentially new
+ * flags, but respecting the original access mode of that description.
+ *
+ * The difference stems from their distinct implementations of the `/dev/fd`
+ * file system. Linux `/dev/fd/<fdN>` is a symbolic link to file description
+ * file, while macOS `/dev/fd/<fdN>` is the file description file itself.
+ */
+
 void test_dup(void);
 void test_dup_open_dev_fd_oflags();
 int get_dev_fd_path(char **, int);
