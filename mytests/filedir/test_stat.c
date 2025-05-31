@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <sys/stat.h>
+
+#include "rltapue.h"
+
+void get_ft(char *p) {
+  struct stat buf;
+  char *type;
+  if (lstat(p, &buf) < 0) {
+    my_perror("lstat");
+    return;
+  }
+  if (S_ISREG(buf.st_mode))
+    type = "regular";
+  else if (S_ISDIR(buf.st_mode))
+    type = "directory";
+  else if (S_ISCHR(buf.st_mode))
+    type = "character special";
+  else if (S_ISBLK(buf.st_mode))
+    type = "block special";
+  else if (S_ISFIFO(buf.st_mode))
+    type = "fifo";
+  else if (S_ISLNK(buf.st_mode))
+    type = "symbolic link";
+  else if (S_ISSOCK(buf.st_mode))
+    type = "socket";
+  else
+    type = "** unknown mode **";
+  printf("[file]:%-20.19s [type]:%18s [value]:%#8o\n", p, type,
+         (buf.st_mode & S_IFMT));
+}
+
+int main(int argc, char *argv[]) {
+  for (int i = 1; i < argc; i++) {
+    get_ft(argv[i]);
+  }
+  return 0;
+}
+
+/* Example:
+Debug/filedir/test_stat /var/log/system.log /etc/ /dev/tty /dev/disk0 /dev/stdin /var/run/usbmuxd tmp/data/filedir/fifo
+[file]:/var/log/system.log  [type]:           regular [value]: 0100000
+[file]:/etc/                [type]:         directory [value]:  040000
+[file]:/dev/tty             [type]: character special [value]:  020000
+[file]:/dev/disk0           [type]:     block special [value]:  060000
+[file]:/dev/stdin           [type]:     symbolic link [value]: 0120000
+[file]:/var/run/usbmuxd     [type]:            socket [value]: 0140000
+[file]:tmp/data/filedir/fi  [type]:              fifo [value]:  010000
+ */
