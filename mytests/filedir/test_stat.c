@@ -38,12 +38,23 @@ int main(int argc, char *argv[]) {
 }
 
 /* Example:
-Debug/filedir/test_stat /var/log/system.log /etc/ /dev/tty /dev/disk0 /dev/stdin /var/run/usbmuxd tmp/data/filedir/fifo
+- on macOS:
+Debug/filedir/test_stat /etc/fstab /etc/ /dev/tty /dev/disk0 /dev/stdin /var/run/usbmuxd tmp/data/filedir/fifo
 [file]:/var/log/system.log  [type]:           regular [value]: 0100000
 [file]:/etc/                [type]:         directory [value]:  040000
 [file]:/dev/tty             [type]: character special [value]:  020000
 [file]:/dev/disk0           [type]:     block special [value]:  060000
 [file]:/dev/stdin           [type]:     symbolic link [value]: 0120000
 [file]:/var/run/usbmuxd     [type]:            socket [value]: 0140000
+[file]:tmp/data/filedir/fi  [type]:              fifo [value]:  010000
+
+- on Linux:
+Debug/filedir/test_stat /etc/fstab /etc/ /dev/tty /dev/loop0 /dev/stdin /var/run/systemd/fsck.progress tmp/data/filedir/fifo
+[file]:/etc/fstab           [type]:           regular [value]: 0100000
+[file]:/etc/                [type]:         directory [value]:  040000
+[file]:/dev/tty             [type]: character special [value]:  020000
+[file]:/dev/loop0           [type]:     block special [value]:  060000
+[file]:/dev/stdin           [type]:     symbolic link [value]: 0120000
+[file]:/var/run/systemd/fs  [type]:            socket [value]: 0140000
 [file]:tmp/data/filedir/fi  [type]:              fifo [value]:  010000
  */
