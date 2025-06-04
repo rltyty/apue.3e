@@ -1,12 +1,11 @@
 #include "rltapue.h"
-#include <stdio.h>
 #include <fcntl.h>
+#include <stdio.h>
 
-void test_features()
-{
+void test_features() {
 #ifdef LINUX
-  printf("On Linux, <fcntl.h> includes <features.h>, in which compilation
-      environment is determined and macros are defined.\n");
+  printf("On Linux, <fcntl.h> includes <features.h>, in which compilation "
+         "environment is determined and macros are defined.\n");
 #ifdef _GNU_SOURCE
   printf("When compiled with _GNU_SOURCE, \n");
 #endif
@@ -14,7 +13,8 @@ void test_features()
   printf("_LARGEFILE64_SOURCE was defined to be %d.\n", _LARGEFILE64_SOURCE);
 #endif
 #ifdef __USE_LARGEFILE64
-  printf("__USE_LARGEFILE64 was defined to be %d further.\n", __USE_LARGEFILE64);
+  printf("__USE_LARGEFILE64 was defined to be %d further.\n",
+         __USE_LARGEFILE64);
 #endif
 #ifdef O_LARGEFILE
   printf("O_LARGEFILE = %d.\n", O_LARGEFILE);
@@ -26,10 +26,11 @@ void test_features()
   printf("__O_LARGEFILE defined.\n");
 #endif
 
-// NOTE:
-// open64.c (glibc: /usr/src/glibc/glibc-2.36/sysdeps/unix/sysv/linux/open64.c)
-//  __libc_open64
-//    return SYSCALL_CANCEL (openat, fd, file, oflag | O_LARGEFILE, mode);
+  // NOTE:
+  // open64.c (glibc:
+  // /usr/src/glibc/glibc-2.36/sysdeps/unix/sysv/linux/open64.c)
+  //  __libc_open64
+  //    return SYSCALL_CANCEL (openat, fd, file, oflag | O_LARGEFILE, mode);
 
 #elif defined(MACOS)
   printf("On macOS, <fcntl.h> use <sys/cdefs.h> for feature determnination");
@@ -46,5 +47,4 @@ int main(void) {
 
   // 2.
   test_features();
-
 }
