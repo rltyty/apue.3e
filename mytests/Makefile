@@ -35,10 +35,11 @@ BINS := $(addprefix $(BUILD)/, $(BINS))
 # Thus, `=` cannot be used to self-assignment, like `CFLAGS = $(CFLAGS) -g3`,
 # use `:=` instead, e.g. `CFLAGS := $(CFLAGS) -g3`
 
-all: msg0 cpdata $(BUILD) msg1
+all: msg0 testdata $(BUILD) msg1
 
-cpdata:
+testdata:
 	mkdir -p tmp && cp -r data/ tmp/
+	mkfifo tmp/data/filedir/fifo
 
 
 msg0:
@@ -78,7 +79,7 @@ test:
 ############################################################
 include $(ROOT)/Make.librltapue.inc
 
-.PHONY: clean test all msg0 $(BUILD) $(SINGLETONS) msg1 cpdata
+.PHONY: clean test all msg0 $(BUILD) $(SINGLETONS) msg1 testdata
 # NOTE:
 # Run without echoing commands by
 # make -s
