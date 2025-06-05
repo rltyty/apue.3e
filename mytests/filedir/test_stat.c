@@ -47,10 +47,16 @@ int main(int argc, char *argv[]) {
     get_ft(argv[i]);
   }
 
-// NOTE:
-// On macOS (and modern BSDs), privilege separation is used, command like
-// `passwd` doesn't rely on SUID being set, but a separated daemon for
-// performing limited sensitive operations.
+/* NOTE:
+ * On macOS (and modern BSDs), privilege separation is used, command like
+ * `passwd` doesn't rely on SUID being set, but a separated daemon for
+ * performing limited sensitive operations.
+ * > ll /usr/bin/passwd
+ * -rwxr-xr-x 1 root wheel 172608 Jul 17  2024 /usr/bin/passwd*
+ * On Linux,
+ * > ll /usr/bin/passwd
+ * -rwsr-xr-x 1 root root 68248 Mar 23  2023 /usr/bin/passwd*
+ */
 #ifdef LINUX
   assert(true == is_setuid("/usr/bin/passwd"));
 #endif
