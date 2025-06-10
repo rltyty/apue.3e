@@ -5,8 +5,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#define BUFSIZE 4096
-
 /* This test shows that "unbuffered" `read(2)`/`write(2)` means "unbuffered
  * in user space". Buffer or cache are still used during these system
  * opertions in kernel space.
