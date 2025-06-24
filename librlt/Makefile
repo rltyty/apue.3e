@@ -28,7 +28,7 @@ endif
 CFLAGS		+= $(CFLAGS.$(BUILD))
 
 # targets
-SRCS		= error.c openmax.c setfl.c profiling.c
+SRCS		= error.c openmax.c setfl.c profiling.c ft.c
 OBJS		= $(SRCS:.c=.o)
 TESTBINS	= $(SRCS:.c=)
 ifeq ($(SHARED), Y)

@@ -39,8 +39,6 @@ all: msg0 testdata $(BUILD) msg1
 
 testdata:
 	mkdir -p tmp && cp -r data/ tmp/
-	mkfifo tmp/data/filedir/fifo
-
 
 msg0:
 	@printf "Start building [32m[%s][m\n" $(BUILD)

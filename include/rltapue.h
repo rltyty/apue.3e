@@ -25,4 +25,7 @@ void set_fl(int, int);
 /* profiling running time */
 void timeit(void(*)(), int);
 
+/* get file type */
+int get_ft(const char*, char**);
+
 #endif /* _RLTAPUE_H */
