@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug current C file",
+      "name": "C Debug Launch: current file (project)",
       "type": "codelldb",
       "request": "launch",
       "program": "${workspaceFolder}/Debug/${relativeFileDirname}/${fileBasenameNoExtension}",
@@ -15,7 +15,7 @@
       }
     },
     {
-      "name": "Debug current C file (Singleton)",
+      "name": "C Debug Launch: current file (standalone)",
       "type": "codelldb",
       "request": "launch",
       "program": "${workspaceFolder}/${relativeFileDirname}/${fileBasenameNoExtension}",
