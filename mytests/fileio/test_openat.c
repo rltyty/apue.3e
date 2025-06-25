@@ -1,4 +1,5 @@
 #include "rltapue.h"
+#include <stdio.h>
 #include <sys/fcntl.h>
 #include <unistd.h>
 
@@ -13,9 +14,9 @@ void test_openat()
   // open a file under the opened directory
   if ((fd_f1 = openat(fd_d1, "file1", O_RDONLY)) < 0)
     my_perror("Open file failed."); 
-  char buf[BUFSIZE];
+  char buf[BUFSIZ];
   int n;
-  while ((n = read(fd_f1, buf, BUFSIZE)) > 0) {
+  while ((n = read(fd_f1, buf, BUFSIZ)) > 0) {
     if (write(STDOUT_FILENO, buf, n) != n)
       my_perror("Error occurred when write file.");
   }

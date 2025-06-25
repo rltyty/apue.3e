@@ -14,10 +14,12 @@ void my_perror(const char*, ...);
 
 /* limits and constants */
 #define MAXLINE 4096                                 /* max line length */
-#define BUFSIZE 4096
 
 #define OPEN_MAX_GUESS 256
 long open_max(void);
+
+#define FILE_MODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
+#define DIR_MODE (FILE_MODE | S_IXUSR | S_IXGRP | S_IXOTH)
 
 /* flags are file status flags to turn on */
 void set_fl(int, int);

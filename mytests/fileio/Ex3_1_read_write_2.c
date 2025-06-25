@@ -38,7 +38,7 @@
 /* .a.out [bufsize [sync]] */
 
 int main(int argc, char *argv[]) {
-  int bufsize = BUFSIZE;
+  int bufsize = BUFSIZ;
   if (argc > 1) {
     int t = atoi(argv[1]);
     if (t > 0)

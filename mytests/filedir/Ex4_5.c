@@ -41,7 +41,8 @@ tmp/data/filedir/emptydir:                  [ 2 entries = 32 * 2 = 64 ]
 .  ..
 
 NOTE:
-1. Looks like a directory entry is of 32 bytes size on macOS.
+1. On macOS, a directory entry's size appears to be 32 bytes.
 2. The file content size of a symbolic link is the target path string size.
-e.g. `../nvim.lua`: 11 bytes
+   e.g. in the link `.nvim.lua -> ../nvim.lua`, the target path is 11 bytes
+
  */
