@@ -4,6 +4,9 @@ DIRS = lib librlt intro sockets advio daemons datafiles db environ \
 
 TESTS = librlt mytests
 
+# Set default MAKEFLAGS for parallel execution if not already set by command line
+MAKEFLAGS ?= -j
+
 all:
 	for dir in $(DIRS); do \
 		(echo "Making $$dir" && $(MAKE) -C $$dir) || exit 1; \

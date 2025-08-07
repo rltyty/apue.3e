@@ -1,2 +1,14 @@
-$(LIBRLTAPUE):
-	(cd $(ROOT)/librlt && $(MAKE) BUILD=$(BUILD) SHARED=$(SHARED))
+SHARED=N
+VERSION=1
+
+ifeq ($(SHARED),Y)
+  LIB_EXT := $(DYNLIB.EXT).$(VERSION)
+else
+  LIB_EXT := a
+endif
+
+LIBRLTAPUE_FILE := $(ROOT)/librlt/$(LIBRLTAPUE).$(LIB_EXT)
+
+$(LIBRLTAPUE_FILE):
+	($(MAKE) -C $(ROOT)/librlt BUILD=$(BUILD) SHARED=$(SHARED) VERSION=$(VERSION))
+

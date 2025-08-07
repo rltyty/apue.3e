@@ -2,7 +2,7 @@
 # e.g. EXCLUDE_DIR := tmp hidden
 # tmp is excluded by make default
 EXCLUDE :=
-EXCLUDE_DIRS :=
+EXCLUDE_DIRS := .cache .vscode data tmp Debug Release
 
 # SINGLETONS build, small scenarios mainly for scratch tests which need
 # a separate Makefile to build.

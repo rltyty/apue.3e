@@ -10,15 +10,6 @@ include $(ROOT)/Make.defines.$(PLATFORM)
 SHARED		= N
 VERSION		= 1
 
-# ld
-LDFLAGS		= -L$(ROOT)/librlt
-LDLIBS		= -lrltapue
-
-# static library
-LIBRLTAPUE.S	= $(LIBRLTAPUE).a
-# dynamic shared library
-LIBRLTAPUE.D	= $(LIBRLTAPUE).$(DYNLIB.EXT)
-
 # clang/gcc, CFLAGS
 ifneq ($(BUILD), Release)
 ifneq ($(BUILD), Debug)
@@ -27,12 +18,22 @@ endif
 endif
 CFLAGS		+= $(CFLAGS.$(BUILD))
 
+# ld
+LDFLAGS		= -L$(ROOT)/librlt
+LDLIBS		= -l$(LIBRLTAPUE_NAME)
+
+# static library
+LIBRLTAPUE.S	= $(LIBRLTAPUE).a
+# dynamic shared library
+LIBRLTAPUE.D	= $(LIBRLTAPUE).$(DYNLIB.EXT)
+
 # targets
 SRCS		= error.c openmax.c setfl.c profiling.c ft.c
 OBJS		= $(SRCS:.c=.o)
 TESTBINS	= $(SRCS:.c=)
 ifeq ($(SHARED), Y)
 LIBTARGET	= $(LIBRLTAPUE.D).$(VERSION)
+LDFLAGS        += $(DYNLIB.FLAGS) $(DYNLIB.LOADPATH)$(LIBTARGET)
 else
 LIBTARGET	= $(LIBRLTAPUE.S)
 endif
@@ -40,13 +41,13 @@ endif
 all:	$(LIBTARGET)
 
 $(LIBRLTAPUE.S): $(OBJS)
-	@echo "Creating static library $@"
+	@echo "Creating static library [$@]"
 	$(AR) rcs $@ $?
 
 $(LIBRLTAPUE.D).$(VERSION):
-	@echo "Creating dynamic shared library $@"
+	@echo "Creating dynamic shared library [$@]"
 	$(CC) $(CFLAGS) -fPIC -c $(SRCS)
-	$(CC) -shared -o $@ $(OBJS)
+	$(CC) $(LDFLAGS) -o $@ $(OBJS)
 	ln -sf $@ $(LIBRLTAPUE.D)
 
 test: $(TESTBINS)
@@ -65,7 +66,7 @@ $(TESTBINS): $(LIBTARGET)
 
 clean:
 	$(RM) $(TESTBINS) $(LIBRLTAPUE.S) \
-		$(LIBRLTAPUE.D) $(LIBRLTAPUE.D).$(VERSION)
+		$(LIBRLTAPUE.D) $(LIBRLTAPUE.D).*
 	$(RM) -r $(TEMPFILES)
 
 .PHONY: all clean test

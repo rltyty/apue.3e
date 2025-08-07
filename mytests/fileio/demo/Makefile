@@ -5,14 +5,15 @@ PLATFORM=$(shell $(ROOT)/systype.sh)
 include $(ROOT)/Make.defines.$(PLATFORM)
 
 LDFLAGS		= -L$(ROOT)/librlt
-LDLIBS		= -lrltapue
+LDLIBS		= -l$(LIBRLTAPUE_NAME)
 CFLAGS		+= $(CFLAGS.$(BUILD))
 
-
 OBJS		= stub.o
-all: $(LIBRLTAPUE) $(OBJS)
+
+all: $(OBJS)
+
+include $(ROOT)/Make.librltapue.inc
 
 clean:
 	$(RM) -r $(TEMPFILES)
 
-include $(ROOT)/Make.librltapue.inc

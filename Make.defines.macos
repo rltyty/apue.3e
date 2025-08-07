@@ -24,12 +24,17 @@ CFLAGS.Release = -O3
 # Default
 BUILD = Release
 
-# Dynamic lib extension
+# Dynamic library
 DYNLIB.EXT = dylib
+DYNLIB.FLAGS = -dynamiclib
+DYNLIB.LOADPATH = -Wl,-install_name,@rpath/
 
 # Common temp files to delete from each directory.
-TEMPFILES=core core.* *.o temp.* *.out *.dSYM tmp/
+TEMPFILES=core core.* *.o temp.* *.out *.dSYM tmp/ *.d
 
 # My lib
-LIBRLTAPUE=librltapue
-SHARED=N
+LIBRLTAPUE_NAME = rltapue
+LIBRLTAPUE = lib$(LIBRLTAPUE_NAME)
+LIBDIR_ABS = $(abspath $(ROOT)/librlt)
+BIN_DYNLIB_RPATH = -Wl,-rpath,$(LIBDIR_ABS)
+
