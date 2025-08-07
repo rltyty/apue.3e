@@ -1,7 +1,7 @@
 #include <assert.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <sys/stat.h>
-#include <stdbool.h>
 
 #include "rltapue.h"
 
@@ -9,7 +9,7 @@ void stat_ft(char *p) {
   struct stat buf;
   char *type;
   // if (lstat(p, &buf) < 0) { // just stat the link itself
-  if (stat(p, &buf) < 0) { // follow the link
+  if (stat(p, &buf) < 0) {  // follow the link
     my_perror("lstat");
     return;
   }
@@ -39,8 +39,8 @@ bool is_setuid(char *p) {
     my_perror("lstat");
     return -1;
   }
-  printf("st_mode:%#o\n", buf.st_mode); // 0100644
-  return (buf.st_mode & S_ISUID) != 0;  // S_ISUID = 0004000
+  printf("st_mode:%#o\n", buf.st_mode);  // 0100644
+  return (buf.st_mode & S_ISUID) != 0;   // S_ISUID = 0004000
 }
 
 int main(int argc, char *argv[]) {
@@ -66,22 +66,23 @@ int main(int argc, char *argv[]) {
 
 /* Example:
 - on macOS:
-Debug/filedir/test_stat /etc/fstab /etc/ /dev/tty /dev/disk0 /dev/stdin /var/run/usbmuxd tmp/data/filedir/fifo
+:!Debug/filedir/test_stat /etc/fstab /etc/ /dev/tty /dev/disk0 /dev/stdin /var/run/usbmuxd tmp/data/filedir/fifo
 [file]:/etc/fstab           [type]:           regular [value]: 0100000
 [file]:/etc/                [type]:         directory [value]:  040000
 [file]:/dev/tty             [type]: character special [value]:  020000
 [file]:/dev/disk0           [type]:     block special [value]:  060000
-[file]:/dev/stdin           [type]: character special [value]:  020000  /dev/stdin -> fd/0
+[file]:/dev/stdin           [type]:     symbolic link [value]: 0120000
 [file]:/var/run/usbmuxd     [type]:            socket [value]: 0140000
 [file]:tmp/data/filedir/fi  [type]:              fifo [value]:  010000
 
 - on Linux:
-Debug/filedir/test_stat /etc/fstab /etc/ /dev/tty /dev/loop0 /dev/stdin /var/run/systemd/fsck.progress tmp/data/filedir/fifo
-[file]:/etc/fstab           [type]:           regular [value]: 0100000
-[file]:/etc/                [type]:         directory [value]:  040000
-[file]:/dev/tty             [type]: character special [value]:  020000
-[file]:/dev/loop0           [type]:     block special [value]:  060000
-[file]:/dev/stdin           [type]: character special [value]:  020000  /dev/stdin -> /proc/self/fd/0
-[file]:/var/run/systemd/fs  [type]:            socket [value]: 0140000
-[file]:tmp/data/filedir/fi  [type]:              fifo [value]:  010000
+Debug/filedir/test_stat /etc/fstab /etc/ /dev/tty /dev/loop0 /dev/stdin
+/var/run/systemd/fsck.progress tmp/data/filedir/fifo [file]:/etc/fstab [type]:
+regular [value]: 0100000 [file]:/etc/                [type]:         directory
+[value]:  040000 [file]:/dev/tty             [type]: character special [value]:
+020000 [file]:/dev/loop0           [type]:     block special [value]:  060000
+[file]:/dev/stdin           [type]: character special [value]:  020000
+/dev/stdin -> /proc/self/fd/0 [file]:/var/run/systemd/fs  [type]: socket
+[value]: 0140000 [file]:tmp/data/filedir/fi  [type]:              fifo [value]:
+010000
  */

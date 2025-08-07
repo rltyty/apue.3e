@@ -5,7 +5,8 @@ make clean; bear -- make
 
 ## generate .clang-format [2]
 ```sh
-    clang-format -style=llvm -dump-config > .clang-format
+    #clang-format -style=LLVM -dump-config > .clang-format
+    clang-format -style=Google -dump-config > .clang-format
 ```
 
 By default, `IndentWidth: 2`

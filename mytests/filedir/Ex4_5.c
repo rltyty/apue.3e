@@ -1,7 +1,8 @@
-#include "rltapue.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <sys/stat.h>
+
+#include "rltapue.h"
 
 int main(int argc, char *argv[]) {
   if (argc <= 1) {
@@ -20,7 +21,8 @@ int main(int argc, char *argv[]) {
 }
 
 /*
-> Debug/filedir/Ex4_5 ../nvim.lua .nvim.lua ./tmp/data/filedir/fifo ./tmp/data/filedir/.gitkeep ./tmp/data/filedir/emptydir
+> Debug/filedir/Ex4_5 ../nvim.lua .nvim.lua ./tmp/data/filedir/fifo
+./tmp/data/filedir/.gitkeep ./tmp/data/filedir/emptydir
 
 file type: regular, file size: 320          [ ../nvim.lua ]
 file type: symbolic link, file size: 11     [ .nvim.lua -> ../nvim.lua ]
