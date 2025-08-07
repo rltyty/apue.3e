@@ -33,7 +33,7 @@ libapue_db.so.1:	db.c $(LIBAPUE)
 		$(LDCMD)
 		ln -s libapue_db.so.1 libapue_db.so
 
-t4:	$(LIBAPUE)
+t4:	$(LIBAPUE) $(LIBMISC)
 		$(CC) $(CFLAGS) -c -I. t4.c
 		$(CC) $(EXTRALD) -o t4 t4.o -L$(ROOT)/lib -L. -lapue_db -lapue
 

@@ -96,7 +96,28 @@ test:
 # updated, corresponding object files will be recompiled and executables will
 # be relinked. [.PRECIOUS: $(OBJS)]
 # 3. Build shared library: [LDFLAGS: -dynamiclib (macOS), -shared (Linux)]
+# 3.1 Check shared library run path on Linux
+# readelf -d ../librlt/librltapue.so.3 | grep -E "RUNPATH|SONAME"
+# 0x000000000000000e (SONAME)             Library soname: [librltapue.so.3]
+# 0x000000000000001d (RUNPATH)            Library runpath: [$ORIGIN]
+# 3.2 Check shared library run path on macOS
+# otool -l ../librlt/librltapue.dylib.3 | grep -A2 LC_ID_DYLIB
+#          cmd LC_ID_DYLIB
+#      cmdsize 56
+#         name @rpath/librltapue.dylib.3 (offset 24)
 # 4. Build executable, link shared library: [LDFLAGS: -Wl,-rpath,$(LIBDIR_ABS)]
+# 4.1 Check executable library run path on Linux:
+# readelf -d ./Debug/filedir/Ex4_1 | grep -E "RUNPATH|NEEDED"
+# 0x0000000000000001 (NEEDED)             Shared library: [librltapue.so.3]
+# 0x000000000000001d (RUNPATH)            Library runpath: [/home/rbach/wksp/apue.3e/librlt]
+# 4.2 Check executable library run path on macOS:
+# otool -l ./Debug/filedir/Ex4_1 | grep -E -A2 "LC_RPATH|LC_LOAD_DYLIB"
+#         cmd LC_LOAD_DYLIB
+#     cmdsize 56
+#        name @rpath/librltapue.dylib.3 (offset 24)
+#         cmd LC_RPATH
+#     cmdsize 48
+#        path /Users/gpanda/wksp/apue.3e/librlt (offset 12)
 # 5. Concurrent build: [make -j, unlimited parallel; make -j4, 4 jobs at most]
 #    -j equivalent to -j$(nproc)
 #    Comaprison of -j, -j4, w/o -j on a $(nproc) = 8 system
