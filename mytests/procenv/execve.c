@@ -22,11 +22,15 @@ int main(int argc, char *argv[]) {
 
 /*
  *
-Debug/proc/execve ./tmp/data/proc/interpreter.file
-argv[0]: Debug/proc/myecho
+cat ./tmp/data/procenv/interpreter.file
+#! Debug/procenv/myecho myecho_arg1 myecho_arg2
+
+Debug/procenv/execve ./tmp/data/procenv/interpreter.file
+Sun Aug 10 10:48:13 CST 2025
+argv[0]: Debug/procenv/myecho
 argv[1]: myecho_arg1
 argv[2]: myecho_arg2
-argv[3]: ./tmp/data/proc/interpreter.file
+argv[3]: ./tmp/data/procenv/interpreter.file
 argv[4]: hello
 argv[5]: world
 

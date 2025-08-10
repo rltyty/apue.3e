@@ -19,8 +19,9 @@
    ```
    `ls -l`: shows logical size, st_size
    `ls -s`: shows disk usage, st_blocks
-   By default, 1 block = 512B, so 16 blocks = 8.0KB
-
+   `ls -s` use 1KB as block size to report the disk usage, this doesn't mean
+   the real block size (allocation unit) of the file system is 1KB.
+   To show file system block size: `stat -f /`
    4. Use `stat file` to show file logical size and blocks usage
  */
 

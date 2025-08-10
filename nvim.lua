@@ -1,7 +1,7 @@
 local map = vim.keymap.set
 
 map('n', '<leader>mk', '<Cmd>make -j BUILD=Release -s<CR>', {noremap = true})
-map('n', '<leader>md', '<Cmd>make -j BUILD=Debug -s<CR>', {noremap = true})
+map('n', '<leader>md', '<Cmd>make -j BUILD=Debug <CR>', {noremap = true})
 map('n', '<leader>mt', '<Cmd>make -j BUILD=Debug -s test<CR>', {noremap = true})
 map('n', '<leader>mc', '<Cmd>make -j -s clean<CR>', {noremap = true})
 

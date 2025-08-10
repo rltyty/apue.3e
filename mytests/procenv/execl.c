@@ -2,21 +2,21 @@
 #include <stdlib.h>
 #include <unistd.h>
 int main(void) {
-  if (execl("./tmp/data/proc/interpreter.file",
+  if (execl("./tmp/data/procenv/interpreter.file",
             "interpreter.file", "arg1", "arg2", (char*)0) < 0)
     my_perror("execl error");
   exit(0);
 }
 
 /*
-> cat ./tmp/data/proc/interpreter.file
-#! Debug/proc/myecho myecho_arg1 myecho_arg2
+> cat ./tmp/data/procenv/interpreter.file
+#! Debug/procenv/myecho myecho_arg1 myecho_arg2
 
-> Debug/proc/execl
-argv[0]: Debug/proc/myecho
+> Debug/procenv/execl
+argv[0]: Debug/procenv/myecho
 argv[1]: myecho_arg1
 argv[2]: myecho_arg2
-argv[3]: ./tmp/data/proc/interpreter.file
+argv[3]: ./tmp/data/procenv/interpreter.file
 argv[4]: arg1
 argv[5]: arg2
 
