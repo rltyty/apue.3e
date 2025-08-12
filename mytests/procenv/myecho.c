@@ -5,8 +5,8 @@
 
 
 int main(int argc, char *argv[]) {
-  for (size_t j = 0; j < argc; j++)
-    printf("argv[%zu]: %s\n", j, argv[j]);
+  for (int j = 0; j < argc; j++)
+    printf("argv[%d]: %s\n", j, argv[j]);
 
   // fflush(stdout);  // explicitly force it out
 
@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
 /*
 - Run in Neovim:
 :!Debug/procenv/myecho a1 a2
-Sun Aug 10 11:41:32 CST 2025
+Sun Aug 10 11:41:32 CST 2025        <--
 argv[0]: Debug/procenv/myecho
 argv[1]: a1
 argv[2]: a2
@@ -28,26 +28,24 @@ Run in Console:
 argv[0]: mytests/Debug/procenv/myecho
 argv[1]: a1
 argv[2]: a2
-Sun Aug 10 12:25:18 CST 2025
-
+Sun Aug 10 12:25:18 CST 2025        <--
 
 NOTE:
 - system("date")
   - fork(2), exec(2)
-  - new child process at fork(2) inherits a copy of FD table
-  - exec(2) replace the child process image with new process `date`
-  - user space buffers like the one of `stdout` (FILE stream) managed by C
-    standard library are all renewed.
+  - new child process from fork(2) inherits a copy of FD table
+  - exec(2) replace the child process image with new image for `date`
+  - new child process `date` has its own new user space, new
+    `stdout` (FILE stream) and its buffer managed by C standard library.
   - kernel space structures like per-process FD table, kernel-wide file table
-    survive `exec(2)`, so `date` output into the same file as the main process.
-
+    survive `exec(2)`, `date`'s `stdout` use the same `STDOUT_FILENO` and
+    writes to the same file (Neovim pipe) as its parent does.
 - Conditions of stdout flushing out being triggered:
   - Newline ('\n') is printed while connected to line buffered terminal
   - The buffer becomes full (fully buffer mode).
   - Explicitly flush out by `fflush(stdout);`
   - exit()` is called explicitly or automatically when `main()` returns.
   - fclose(stdout)`
-
 - The discrepancy of output order shown above is because the C library
   (printf(3), puts(3), etc.) chooses buffering mode for `stdout` based on what
   it's connected to.

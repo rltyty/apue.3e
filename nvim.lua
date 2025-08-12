@@ -5,6 +5,9 @@ map('n', '<leader>md', '<Cmd>make -j BUILD=Debug <CR>', {noremap = true})
 map('n', '<leader>mt', '<Cmd>make -j BUILD=Debug -s test<CR>', {noremap = true})
 map('n', '<leader>mc', '<Cmd>make -j -s clean<CR>', {noremap = true})
 
+-- test makefile
+map('n', '<leader>mdd', '<Cmd>make -j BUILD=Debug SHARED=Y VERSION=3<CR>', {noremap = true})
+
 -- Refer to $HOME/.local/share/nvim/lazy/mason-nvim-dap.nvim/lua/mason-nvim-dap/mappings/configurations.lua:82
 local prj_dap_c = {
   {

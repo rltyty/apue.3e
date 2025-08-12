@@ -1,23 +1,19 @@
-/* myecho.c */
+/* test_main_argv.c */
 
 #include <stdio.h>
 #include <stdlib.h>
 
-/**
- * argv is NULL-terminated as required by both the C and POSIX standards.
- * argv[0]: program name
- * argv[1]~argv[argc-1]: arguments
- * argv[argc]: NULL
- */
+// argv[0]: program name, argv[1] ~ argv[argc-1]: arguments, argv[argc]: NULL
+
 int main(int argc, char *argv[]) {
   // 1.
-  for (size_t j = 0; j < argc; j++)
-    printf("argv[%zu]: %s\n", j, argv[j]);
+  for (int j = 0; j < argc; j++)
+    printf("argv[%d]: %s\n", j, argv[j]);
   printf("---\n");
 
   // 2.
-  for (size_t j = 0; argv[j] != NULL; j++)
-    printf("argv[%zu]: %s\n", j, argv[j]);
+  for (int j = 0; argv[j] != NULL; j++)
+    printf("argv[%d]: %s\n", j, argv[j]);
   printf("---\n");
 
   // 3.
@@ -26,19 +22,16 @@ int main(int argc, char *argv[]) {
   printf("---\n");
 
   // print argc arguments + 1.
-  for (size_t j = 0; j <= argc; j++)
-    printf ("argv[%zu]: %s\n", j, argv[j]);
-  printf("---\n");
+  for (int j = 0; j <= argc; j++)
+    printf ("argv[%d]: %s\n", j, argv[j]);
+  int r = printf("---\n");
 
-  // forks here
-  system("date"); // implemented by calling fork(2), execve(2), waitpid(2)
-  exit(EXIT_SUCCESS);
+  // implicit return
+  printf("printf(\"---\\n\") = %d, but implicit return of main() is 0.\n", r);
 }
 
 /*
-Debug/procenv/test_main_argv a1 a2
-Sun Aug 10 11:39:16 CST 2025
-argv[0]: Debug/procenv/test_main_argv
+:!Debug/procenv/test_main_argv a1 a2
 argv[1]: a1
 argv[2]: a2
 ---
