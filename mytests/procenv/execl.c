@@ -52,7 +52,6 @@ When it is executed via `./a.sh` or `execve(interpreter_file_path, argv, envp)`
      script with the script path.
   b. On Linux the kernel only supports one optional shebang argument -- it's
      just one contiguous string after the interpreter path, up to newline
-     script 
      argv[0]: Debug/procenv/printargv
      argv[1]: interp_arg1 interp_arg2   <- Linux: the rest of the line after the interpreter
      argv[2]: ./tmp/data/procenv/interpreter.file
