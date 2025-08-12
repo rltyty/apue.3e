@@ -11,11 +11,24 @@ int main(int argc, char *argv[]) {
 }
 
 /*
+cat ./tmp/data/procenv/interpreter.file
+#! Debug/procenv/printargv interp_arg1 interp_arg2
+
+Unix (macOS):
 :!Debug/procenv/exec_interpreter_file
 argv[0]: Debug/procenv/printargv
-argv[1]: myecho_arg1
-argv[2]: myecho_arg2
+argv[1]: interp_arg1
+argv[2]: interp_arg2
 argv[3]: ./tmp/data/procenv/interpreter.file
 argv[4]: arg1
 argv[5]: arg2
+
+Linux:
+:!Debug/procenv/exec_interpreter_file
+argv[0]: Debug/procenv/printargv
+argv[1]: interp_arg1 interp_arg2        <- Linux: the rest of the line after the interpreter
+argv[2]: ./tmp/data/procenv/interpreter.file
+argv[3]: arg1
+argv[4]: arg2
+
  */
