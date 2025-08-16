@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #pragma clang diagnostic ignored "-Wsizeof-array-decay"
 #pragma clang diagnostic ignored "-Wsizeof-array-argument"
@@ -25,7 +26,21 @@ void array_ptr_char(char *a) {
   ;
 }
 
+void test_char_arr(void) {
+  char a[] = "12345\n";
+  assert(sizeof(a) == 7);   // include hidden '\0' at the end of the string
+  assert(strlen(a) == 6);   // exclude hidden '\0'
+  printf("%s", a);
+
+  char b[10] = "12345\n";   // partial initialization with padding zeros
+  assert(sizeof(b) == 10);  // "12345\n0000"
+  assert(strlen(b) == 6);
+  printf("%s", b);
+}
+
 int main(void) {
+  test_char_arr();
+
   char arr[108];
   char *ptr = arr;
   assert(108 == sizeof(arr));

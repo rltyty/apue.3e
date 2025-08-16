@@ -28,7 +28,8 @@ LIBRLTAPUE.S	= $(LIBRLTAPUE).a
 LIBRLTAPUE.D	= $(LIBRLTAPUE).$(DYNLIB.EXT)
 
 # targets
-SRCS		= error.c openmax.c setfl.c profiling.c ft.c
+# SRCS		= error.c openmax.c setfl.c profiling.c ft.c
+SRCS		= $(shell fd -e c)
 OBJS		= $(SRCS:.c=.o)
 TESTBINS	= $(SRCS:.c=)
 ifeq ($(SHARED), Y)

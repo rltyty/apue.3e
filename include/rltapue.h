@@ -30,4 +30,17 @@ void timeit(void(*)(), int);
 /* get file type */
 int get_ft(const char*, char**);
 
+/* print exit staus */
+void pr_exit(int);
+
+/* print environ */
+void pr_environ(void);
+
+/* Append a path to the PATH environment */
+int add_path(char *);
+
+/* print separator line */
+void pr_sep(char, int);
+void pr_sep_msg(char, int, char *);
+
 #endif /* _RLTAPUE_H */

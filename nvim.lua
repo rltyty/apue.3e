@@ -6,7 +6,7 @@ map('n', '<leader>mt', '<Cmd>make -j BUILD=Debug -s test<CR>', {noremap = true})
 map('n', '<leader>mc', '<Cmd>make -j -s clean<CR>', {noremap = true})
 
 -- test makefile
-map('n', '<leader>mdd', '<Cmd>make -j BUILD=Debug SHARED=Y VERSION=3<CR>', {noremap = true})
+map('n', '<leader>mdt', '<Cmd>make -j BUILD=Debug SHARED=Y VERSION=3<CR>', {noremap = true})
 
 -- Refer to $HOME/.local/share/nvim/lazy/mason-nvim-dap.nvim/lua/mason-nvim-dap/mappings/configurations.lua:82
 local prj_dap_c = {
@@ -34,4 +34,10 @@ local prj_dap_c = {
 
 local dap_c = require('dap').configurations.c
 dap_c = vim.list_extend(dap_c or {}, prj_dap_c)
+
+
+-- project specific templates
+
+vim.g.use_prj_tmpl = true
+vim.g.prj_tmpl_root = 'templates'
 
