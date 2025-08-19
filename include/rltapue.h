@@ -11,6 +11,7 @@
 
 /* print error message */
 void my_perror(const char*, ...);
+void my_perr_dump(const char*, ...);
 
 /* limits and constants */
 #define MAXLINE 4096                                 /* max line length */
@@ -43,4 +44,11 @@ int add_path(char *);
 void pr_sep(char, int);
 void pr_sep_msg(char, int, char *);
 
+/* print process status and signal received */
+void pr_statsig(int);
+
+/* for signal handlers */
+typedef void  Sigfunc(int);
+
 #endif /* _RLTAPUE_H */
+

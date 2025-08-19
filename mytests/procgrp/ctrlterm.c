@@ -32,3 +32,10 @@ Echo input from STDIN:[Sat Aug 16 12:16:54 CST 2025
 Main process say Hi!
 #]
  */
+
+/* NOTE:
+ * <CTRL-D> tells the terminal driver:
+ * 1. if empty buffer: signal EOF (end of input)
+ * 2. if non-empty buffer: deliver the current buffer contents immediately,
+ *                         without adding a newline.
+ */

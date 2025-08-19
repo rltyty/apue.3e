@@ -1,12 +1,12 @@
 local map = vim.keymap.set
 
-map('n', '<leader>mk', '<Cmd>make -j BUILD=Release -s<CR>', {noremap = true})
-map('n', '<leader>md', '<Cmd>make -j BUILD=Debug <CR>', {noremap = true})
-map('n', '<leader>mt', '<Cmd>make -j BUILD=Debug -s test<CR>', {noremap = true})
-map('n', '<leader>mc', '<Cmd>make -j -s clean<CR>', {noremap = true})
+map('n', '<leader>mk', '<Cmd>make -j BUILD=Release -s<CR>', { noremap = true })
+map('n', '<leader>md', '<Cmd>make -j BUILD=Debug <CR>', { noremap = true })
+map('n', '<leader>mt', '<Cmd>make -j BUILD=Debug -s test<CR>', { noremap = true })
+map('n', '<leader>mc', '<Cmd>make -j -s clean<CR>', { noremap = true })
 
 -- test makefile
-map('n', '<leader>mdt', '<Cmd>make -j BUILD=Debug SHARED=Y VERSION=3<CR>', {noremap = true})
+map('n', '<leader>mdt', '<Cmd>make -j BUILD=Debug SHARED=Y VERSION=3<CR>', { noremap = true })
 
 -- Refer to $HOME/.local/share/nvim/lazy/mason-nvim-dap.nvim/lua/mason-nvim-dap/mappings/configurations.lua:82
 local prj_dap_c = {
@@ -17,7 +17,7 @@ local prj_dap_c = {
     program = "${workspaceFolder}/Debug/${relativeFileDirname}/${fileBasenameNoExtension}",
     args = function()
       local input = vim.fn.input('Args: ')
-      return vim.split(input, ' ')  -- Split into a table
+      return vim.split(input, ' ') -- Split into a table
     end,
   },
   {
@@ -27,7 +27,7 @@ local prj_dap_c = {
     program = "${workspaceFolder}/${relativeFileDirname}/${fileBasenameNoExtension}",
     args = function()
       local input = vim.fn.input('Args: ')
-      return vim.split(input, ' ')  -- Split into a table
+      return vim.split(input, ' ') -- Split into a table
     end,
   }
 }
@@ -41,3 +41,5 @@ dap_c = vim.list_extend(dap_c or {}, prj_dap_c)
 vim.g.use_prj_tmpl = true
 vim.g.prj_tmpl_root = 'templates'
 
+-- add separator
+map({ 'n', 'v' }, '<leader>zs', '70a-<ESC>', { noremap = true, desc = 'Insert a sep line.' })

@@ -20,6 +20,8 @@ void test_openat()
     if (write(STDOUT_FILENO, buf, n) != n)
       my_perror("Error occurred when write file.");
   }
+  close(fd_f1);
+  close(fd_d1);
 }
 
 int main(int argc, char **args)
