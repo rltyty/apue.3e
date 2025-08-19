@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/_types/_va_list.h>
 
 static void	err_doit(int, int, const char *, va_list);
 static void	perr_doit(const char *, va_list);
