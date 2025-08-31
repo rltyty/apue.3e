@@ -29,7 +29,7 @@ int main(void) {
   strcpy(wbuf2, ", Messi!");
   if ((fd = open(fname, O_RDWR|O_APPEND)) > 0) {
     assert(0 == showcfo(fd, "Open with O_RDWR|O_APPEND"));
-#ifdef LINUX
+#ifdef _GNU_SOURCE
     printf("file size: %ld\n", fsize(fd));
 #else
     printf("file size: %lld\n", fsize(fd));
@@ -40,7 +40,7 @@ int main(void) {
     assert(size + write(fd, wbuf, 15) == \
                                 showcfo(fd, "After write at most 15 bytes"));
     char *msg;
-#ifdef LINUX
+#ifdef _GNU_SOURCE
     asprintf(&msg, "After reset current offset to %ld",
                                                     lseek(fd, 20, SEEK_SET));
 #else
@@ -65,7 +65,7 @@ off_t fsize(int fd)
 off_t showcfo(int fd, const char *msg)
 {
     off_t cfo = lseek(fd, 0, SEEK_CUR);
-#ifdef LINUX
+#ifdef _GNU_SOURCE
     printf("%s, cfo=[%ld]\n", msg, cfo);
 #else
     printf("%s, cfo=[%lld]\n", msg, cfo);

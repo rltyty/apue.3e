@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
  * > ll /usr/bin/passwd
  * -rwsr-xr-x 1 root root 68248 Mar 23  2023 /usr/bin/passwd*
  */
-#ifdef LINUX
+#ifdef __linux__
   assert(true == is_setuid("/usr/bin/passwd"));
 #endif
   return 0;

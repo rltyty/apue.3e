@@ -6,4 +6,4 @@ EXCLUDE_DIRS := .cache .vscode data tmp Debug Release
 
 # SINGLETONS build, small scenarios mainly for scratch tests which need
 # a separate Makefile to build.
-SINGLETONS = demo group
+SINGLETONS = local

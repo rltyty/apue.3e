@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 void test_features() {
-#ifdef LINUX
+#ifdef __linux__
   printf("On Linux, <fcntl.h> includes <features.h>, in which compilation "
          "environment is determined and macros are defined.\n");
 #ifdef _GNU_SOURCE
@@ -32,7 +32,7 @@ void test_features() {
   //  __libc_open64
   //    return SYSCALL_CANCEL (openat, fd, file, oflag | O_LARGEFILE, mode);
 
-#elif defined(MACOS)
+#elif defined(__APPLE__)
   printf("On macOS, <fcntl.h> use <sys/cdefs.h> for feature determnination");
 #ifdef _DARWIN_C_SOURCE
   printf("When compiled with _DARWIN_C_SOURCE, \n");

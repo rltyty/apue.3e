@@ -30,9 +30,9 @@ int main(void) {
 void test_dup(void) {
   /* int fdts = getdtablesize(); */ /* deprecated, use sysconf(_SC_OPEN_MAX) */
   long fdts = sysconf(_SC_OPEN_MAX);
-#ifdef MACOS
+#ifdef __APPLE__
   assert(2048 == fdts);
-#elif defined LINUX
+#elif defined __linux__
   assert(1024 == fdts);
 #endif
   printf("getdtablesize() is deprecated, sysconf(_SC_OPEN_MAX)=%ld\n", fdts);
