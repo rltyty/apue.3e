@@ -1,7 +1,6 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/_types/_pid_t.h>
 #include <unistd.h>
 #include "rltapue.h"
 

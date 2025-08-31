@@ -1,7 +1,6 @@
 #include <errno.h>
 #include <signal.h>
 #include <stdio.h>
-#include <sys/_types/_pid_t.h>
 #include <sys/errno.h>
 #include <sys/signal.h>
 #include <sys/wait.h>
