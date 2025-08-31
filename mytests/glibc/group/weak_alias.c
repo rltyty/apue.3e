@@ -63,11 +63,16 @@ void __typeof_test(void)
  *      exists elsewhere, that one overrides this weak alias.
  *      - Otherwise, `aliasname` just points to `name`
  */
+#ifdef LINUX
 __typeof(rshift) shift2 __attribute((weak, alias ("rshift")));
 __typeof(lshift) shift3 __attribute((weak, alias ("lshift")));
 
-// strong alias, results in multiple definition of shift3
+/* strong alias, results in linker error: multiple definition of shift3 */
 // __typeof(lshift) shift3 __attribute((alias ("lshift"))); // linker error
+#elif defined(MACOS)
+static __typeof(rshift) *shift2 = rshift;
+static __typeof(lshift) *shift3 = lshift;
+#endif
 
 void __attribute___test(void)
 {
@@ -78,11 +83,16 @@ void __attribute___test(void)
   shift2(&b, 5);
   assert(2 == b);
 
-  shift3(&b, 4);    // strong definition in shift3.c overrides weak alias
+  shift3(&b, 4);
+#ifdef LINUX
+  /* strong definition in shift3.c overrides weak alias */
   assert(64 == b);
+#elif defined(MACOS)
+  assert(32 == b);
+#endif
 }
 
-
+#ifdef LINUX
 /**
  * 3. __attribute_copy__(name) a glibc extension: it copies attributes (like
  * nonnull, malloc, format(printf, …) etc.) from name to aliasname.
@@ -90,7 +100,7 @@ void __attribute___test(void)
  */
 
 __typeof(lshift) shift4 __attribute((weak, alias ("rshift"))) \
-    __attribute_copy__(arg);
+    __attribute_copy__(lshift);
 
 void __attribute_copy___test(void)
 {
@@ -98,12 +108,15 @@ void __attribute_copy___test(void)
   shift4(&a, 5);
   assert(2 == a);
 }
+#endif
 
 int main(int argc, char *argv[]) {
 
   __typeof_test();
   __attribute___test();
+#ifdef LINUX
   __attribute_copy___test();
+#endif
 
   return 0;
 }

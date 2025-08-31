@@ -9,14 +9,14 @@ LDLIBS		= -l$(LIBRLTAPUE_NAME)
 CFLAGS		+= $(CFLAGS.$(BUILD))
 
 OBJS		= shift3.o
-BIN		= weak_alias
+BINS		= weak_alias
 
-all: $(BIN)
+all: $(BINS)
 
-$(BIN): $(OBJS)
+$(BINS): $(OBJS)
 
 include $(ROOT)/Make.librltapue.inc
 
 clean:
-	$(RM) -r $(TEMPFILES)
+	$(RM) -r $(TEMPFILES) $(BINS)
 

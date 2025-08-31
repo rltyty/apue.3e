@@ -21,7 +21,11 @@ void pr_rlimit(struct rlimit lim) {
   if (lim.rlim_cur == RLIM_INFINITY) {
     printf("soft lim: unlimited, ");
   } else {
+#ifdef MACOS
+    printf("soft lim: %lld, ", lim.rlim_cur);
+#elif defined(LINUX)
     printf("soft lim: %ld, ", lim.rlim_cur);
+#endif
   }
 
   if (lim.rlim_max == RLIM_INFINITY) {
