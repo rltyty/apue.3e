@@ -1,5 +1,7 @@
 #ifndef _RLTAPUE_H
 #define _RLTAPUE_H
+#include <sys/types.h>
+#include "apue.h"
 
 /* simple stack */
 #define push(sp, n) (*((sp)++)) = (n)
@@ -48,7 +50,19 @@ void pr_sep_msg(char, int, char *);
 void pr_statsig(int);
 
 /* for signal handlers */
-typedef void  Sigfunc(int);
+typedef void Sigfunc(int);
+
+#define SIG_NAME_SET_SIZE 512
+void pr_mask(const char *);
+void pr_mask2(const char *, sigset_t *);
+
+/* convert pid_t to string */
+char *pidstr(pid_t);
+
+/* show ps info */
+void ps(pid_t);
+
 
 #endif /* _RLTAPUE_H */
+
 
