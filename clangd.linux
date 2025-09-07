@@ -1,17 +1,13 @@
 CompileFlags:
-  CompilationDatabase: /home/scv/repos.3rdparty/glibc-2.36/build
   Add: [
-    # Include glibc source headers (to enable jump to implementation)
     -I/home/scv/repos.3rdparty/glibc-2.36/include,
     -I/home/scv/repos.3rdparty/glibc-2.36,
-    -I/home/scv/repos.3rdparty/glibc-2.36/sysdeps/unix/sysv,
+    -I/home/scv/repos.3rdparty/glibc-2.36/posix,
     -I/home/scv/repos.3rdparty/glibc-2.36/sysdeps/unix/sysv/linux,
+    -I/home/scv/repos.3rdparty/glibc-2.36/sysdeps/unix/sysv/linux/x86_64,
 
-    # Clang built-in headers
-    -isystem/usr/lib/llvm-22/lib/clang/22/include,
+    -isystem /usr/lib/clang/22/include,
 
-    # System libc headers (searched after your glibc sources)
-    -isystem/usr/include,
-    -isystem/usr/local/include
+    -isystem /usr/local/include,
+    -isystem /usr/include
   ]
-
