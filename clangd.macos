@@ -1,0 +1,17 @@
+CompileFlags:
+  Add: [
+    # System headers (macOS SDK)
+    -isystem/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include,
+    # Framework headers
+    -iframework/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks,
+
+    # Libc headers
+    -I/Users/gpanda/repos.3rdparty/Libc-Libc-1592.100.35/include,
+    -I/Users/gpanda/repos.3rdparty/Libc-Libc-1592.100.35/gen,
+
+    # XNU headers (bsd part)
+    -I/Users/gpanda/repos.3rdparty/xnu-xnu-10063.121.3,
+    -I/Users/gpanda/repos.3rdparty/xnu-xnu-10063.121.3/bsd,
+    -I/Users/gpanda/repos.3rdparty/xnu-xnu-10063.121.3/bsd/sys
+
+  ]

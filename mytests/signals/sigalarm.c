@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <unistd.h>
 int main(int argc, char *argv[]) {
   alarm(5); // modern version: setitimer(2)

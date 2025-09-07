@@ -21,3 +21,15 @@ find . -name '*.c' | jq -R -s -c '
 
 cd -
 
+cd /home/scv/repos.3rdparty/linux-6.1.147
+
+find . -name '*.c' | jq -R -s -c '
+  split("\n")[:-1] |
+  map({
+    directory: "/home/scv/repos.3rdparty/linux-6.1.147",
+    command: "clang -Iinclude -Iarch/x86/include -Iarch/x86/include/generated -include include/linux/kconfig.h -c \(. )",
+    file: .
+  })
+' > compile_commands.json
+
+cd -

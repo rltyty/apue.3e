@@ -12,6 +12,7 @@ LDDIR=-L$(ROOT)/lib
 LDLIBS=-lapue $(EXTRALIBS)
 # CFLAGS=-ansi -I$(ROOT)/include -Wall -DMACOS -D_DARWIN_C_SOURCE $(EXTRA)
 # CFLAGS=-std=c11 -I$(ROOT)/include -Wall -DMACOS -D_DARWIN_C_SOURCE $(EXTRA)
+# CFLAGS=-std=c17 -I$(ROOT)/include -Wall -DMACOS -D_DARWIN_C_SOURCE -D__DARWIN_UNIX03 $(EXTRA)
 CFLAGS=-std=c17 -I$(ROOT)/include -Wall -DMACOS -D_DARWIN_C_SOURCE $(EXTRA)
 RANLIB=ranlib
 AR=ar

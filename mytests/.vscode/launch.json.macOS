@@ -11,7 +11,7 @@
       "stopOnEntry": false,
       "console": "integratedTerminal",
       "sourceMap": {
-        ".": "$HOME/repos.3rdparty/glibc-2.36"
+        ".": "$HOME/repos.3rdparty/Libc-Libc-1592.100.35"
       }
     },
     {
@@ -24,7 +24,7 @@
       "stopOnEntry": false,
       "console": "integratedTerminal",
       "sourceMap": {
-        ".": "$HOME/repos.3rdparty/glibc-2.36"
+        ".": "$HOME/repos.3rdparty/Libc-Libc-1592.100.35"
       }
     }
   ]

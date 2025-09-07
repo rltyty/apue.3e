@@ -33,9 +33,12 @@ void test_features() {
   //    return SYSCALL_CANCEL (openat, fd, file, oflag | O_LARGEFILE, mode);
 
 #elif defined(__APPLE__)
-  printf("On macOS, <fcntl.h> use <sys/cdefs.h> for feature determnination");
+  printf("On macOS, <fcntl.h> use <sys/cdefs.h> for feature determnination:\n");
 #ifdef _DARWIN_C_SOURCE
-  printf("When compiled with _DARWIN_C_SOURCE, \n");
+  printf("_DARWIN_C_SOURCE\n");
+#endif
+#ifdef __DARWIN_UNIX03
+  printf("__DARWIN_UNIX03 \n");
 #endif
 #endif
 }
