@@ -3,6 +3,12 @@
 #include <string.h>
 #include <time.h>
 
+/**
+ * 1. Both `puts(3)` and `printf(3)` are buffered.
+ * 2. `puts(3)` automatically adds '\n' whereas `printf(3)` doesn't.
+ * 3. `puts(3)` doesn't support formatting, so it's usually slightly faster
+ *    than `printf(3)`
+ */
 void test_puts(int loop, char *msg)
 {
     for (int i = 0; i < loop; i++) {
@@ -14,6 +20,13 @@ void test_printf(int loop, char *msg)
 {
     for (int i = 0; i < loop; i++) {
         printf("%s\n", msg);
+    }
+}
+
+void test_printf_no_newline(int loop, char *msg)
+{
+    for (int i = 0; i < loop; i++) {
+        printf("%s", msg);
     }
 }
 
@@ -39,16 +52,32 @@ int main(int argc, char* argv[])
 
 
     double t1 = profiling(test_puts, loop, msg);
-
     double t2 = profiling(test_printf, loop, msg);
+    double t3 = profiling(test_printf_no_newline, loop, msg);
 
     printf("Profiling test_puts: %d msg:[%s]: Time used: %f\n", loop, msg, t1);
     printf("Profiling test_printf: %d msg:[%s]: Time used: %f\n", loop, msg, t2);
+    printf("Profiling test_printf_no_newline: %d msg:[%s]: Time used: %f\n", loop, msg, t3);
     return 0;
 }
 
 /*
- * Ex1.
- * Profiling test_puts: 1000000 msg:[Messi]: Time used: 0.063512
- * Profiling test_printf: 1000000 msg:[Messi]: Time used: 0.115305
+
+# 1. Line-buffered (console): the first two flush their streams line by line
+> ./Debug/general/test_puts_printf 100000 Messi
+...
+...
+Profiling test_puts: 100000 msg:[Messi]: Time used: 0.096289
+Profiling test_printf: 100000 msg:[Messi]: Time used: 0.109352
+Profiling test_printf_no_newline: 100000 msg:[Messi]: Time used: 0.013930
+
+
+# 2. Fully-buffered (redirection to normal file): '\n' doesn't trigger flush
+> ./Debug/general/test_puts_printf 100000 Messi > full
+> tail -3 file
+...
+Profiling test_puts: 100000 msg:[Messi]: Time used: 0.007696
+Profiling test_printf: 100000 msg:[Messi]: Time used: 0.013391
+Profiling test_printf_no_newline: 100000 msg:[Messi]: Time used: 0.011918
+
  */
