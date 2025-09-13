@@ -1,6 +1,6 @@
 #ifndef _RLTAPUE_H
 #define _RLTAPUE_H
-#include <sys/types.h>
+// #include <sys/types.h>
 #include "apue.h"
 
 /* simple stack */
