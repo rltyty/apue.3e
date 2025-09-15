@@ -20,6 +20,7 @@ int init_file(const char *const path) {
 }
 
 int incre_file(FILE *pf) {
+  rewind(pf);             // move to start before reading
   int a;
   int n = fscanf(pf, "%d", &a);
   if (n == EOF) {
@@ -31,10 +32,11 @@ int incre_file(FILE *pf) {
     my_perror("error: fscanf()");
   } else if (n == 1) {
     a++;
-    rewind(pf);
+    rewind(pf);           // reset again before writing
     if (fprintf(pf, "%d", a) < 0) {
       my_perror("error: fprintf() with ferror()=%d", ferror(pf));
     }
+    fflush(pf);  // make sure push changes to disk
   }
   return 0;
 }
@@ -47,28 +49,28 @@ void test(void) {
   if (pid < 0) {
     my_perror("error: fork");
   } else if (pid == 0) {  // child
+    FILE *pf = fopen(file, "r+");
     for (int i = 0; i < 3; i++) {
       WAIT_PARENT();
       // critical section
-      FILE *pf = fopen(file, "r+");
       if (!pf) my_perror("error: fopen in rw mode");
       printf("Child[%d]: increase the counter\n", getpid());
       incre_file(pf);
-      fclose(pf);
       TELL_PARENT(getppid());
     }
+    fclose(pf);
     exit(0);
   } else {  // parent
+    FILE *pf = fopen(file, "r+");
     for (int i = 0; i < 3; i++) {
       // critical section
-      FILE *pf = fopen(file, "r+");
       if (!pf) my_perror("error: fopen in rw mode");
       printf("Parent[%d]: increase the counter\n", getpid());
       incre_file(pf);
-      fclose(pf);
       TELL_CHILD(pid);
       WAIT_CHILD();
     }
+    fclose(pf);
     exit(0);
   }
 }
