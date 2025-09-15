@@ -1,3 +1,5 @@
+#include <stddef.h>
+
 #include "rltapue.h"
 
 /* -------------------- copy ../lib/tellwait.c -------------------- */
@@ -22,9 +24,7 @@ void TELL_WAIT(void) {
     err_sys("SIG_BLOCK error");
 }
 
-void TELL_PARENT(pid_t pid) {
-    kill(pid, SIGUSR2);  /* tell parent we’re done */
-}
+void TELL_PARENT(pid_t pid) { kill(pid, SIGUSR2); /* tell parent we’re done */ }
 
 void WAIT_PARENT(void) {
   while (sigflag == 0) sigsuspend(&zeromask); /* and wait for parent */
@@ -34,9 +34,7 @@ void WAIT_PARENT(void) {
     err_sys("SIG_SETMASK error");
 }
 
-void TELL_CHILD(pid_t pid) {
-  kill(pid, SIGUSR1);  /* tell child we’re done */
-}
+void TELL_CHILD(pid_t pid) { kill(pid, SIGUSR1); /* tell child we’re done */ }
 
 void WAIT_CHILD(void) {
   while (sigflag == 0) sigsuspend(&zeromask); /* and wait for child */

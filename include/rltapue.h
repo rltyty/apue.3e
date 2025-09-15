@@ -62,6 +62,15 @@ char *pidstr(pid_t);
 /* show ps info */
 void ps(pid_t);
 
+/* {App misc_source} */
+void	err_msg(const char *, ...);
+void	err_dump(const char *, ...) __attribute__((noreturn));
+void	err_quit(const char *, ...) __attribute__((noreturn));
+void	err_cont(int, const char *, ...);
+void	err_exit(int, const char *, ...) __attribute__((noreturn));
+void	err_ret(const char *, ...);
+void	err_sys(const char *, ...) __attribute__((noreturn));
+
 /* parent/child from {Sec race_conditions} */
 void TELL_WAIT(void);
 void TELL_PARENT(pid_t);
