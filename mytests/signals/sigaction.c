@@ -1,12 +1,12 @@
 #include <errno.h>
+#include <fcntl.h>
 #include <signal.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <fcntl.h>
 
 #include "rltapue.h"
-
 
 /**
 - Common restartable syscalls (with SA_RESTART):
@@ -52,8 +52,8 @@ void non_restartable_syscall_test() {
     exit(0);
   } else {
     sleep(2);
-    printf("Parent[PID=%d]: Send [%s] to Child[%d]\n",
-        getpid(), strsignal(SIGINT), pid);
+    printf("Parent[PID=%d]: Send [%s] to Child[%d]\n", getpid(),
+           strsignal(SIGINT), pid);
     kill(pid, SIGINT);
     wait(NULL);
     printf("Parent[PID=%d]: Exiting non_restartable_syscall_test()\n",
@@ -69,7 +69,7 @@ void restartable_syscall_test() {
     char buf[BUFSIZ];
     size_t n;
     printf("Child[PID=%d]: blocking on read()...\n", getpid());
-    while ((n = read(STDIN_FILENO, buf, sizeof(buf)-1)) > 0) {
+    while ((n = read(STDIN_FILENO, buf, sizeof(buf) - 1)) > 0) {
       buf[n] = '\0';
       printf("Child[PID=%d]: Read %ld chars: [%s]\n", getpid(), n, buf);
     }
@@ -85,13 +85,15 @@ void restartable_syscall_test() {
     int exitFlag = 3;
     while (exitFlag-- > 0) {
       sleep(3);
-      printf("Parent[%d]: Send [%s] to Child[%d]\n",
-          getpid(), strsignal(SIGINT), pid);
+      printf("Parent[%d]: Send [%s] to Child[%d]\n", getpid(),
+             strsignal(SIGINT), pid);
       kill(pid, SIGINT);
     }
     sleep(1);
-    printf("Parent[PID=%d]: Now wait() for the child."
-           "Type <CTRL-D> to end the talk.\n\n", getpid());
+    printf(
+        "Parent[PID=%d]: Now wait() for the child."
+        "Type <CTRL-D> to end the talk.\n\n",
+        getpid());
     wait(NULL);
     printf("Parent[PID=%d]: Exiting estartable_syscall_test()\n", getpid());
   }
@@ -116,8 +118,8 @@ int main(int argc, char *argv[]) {
 /*
  * Sample:
 > ./Debug/signals/sigaction
--------------------------  non_restartable_syscall_test()  -------------------------
-Child[PID=65200]: blocking on pause()...
+-------------------------  non_restartable_syscall_test()
+------------------------- Child[PID=65200]: blocking on pause()...
 Parent[PID=65199]: Send [Interrupt: 2] to Child[65200]
 sig_hand: [Interrupt: 2] is caught by PID[65200].
 Child[PID=65200]: Exiting...
@@ -136,8 +138,9 @@ Hello, world!
 Child[PID=65245]: Read 14 chars: [Hello, world!
 ]
 Hello, world!Child[PID=65245]: Read 13 chars: [Hello, world!]
-The difference is: 1) first input ended with new line 2) 2nd input ended with <CTRL-D> (EOF).
-Child[PID=65245]: Read 94 chars: [The difference is: 1) first input ended with new line 2) 2nd input ended with <CTRL-D> (EOF).
+The difference is: 1) first input ended with new line 2) 2nd input ended with
+<CTRL-D> (EOF). Child[PID=65245]: Read 94 chars: [The difference is: 1) first
+input ended with new line 2) 2nd input ended with <CTRL-D> (EOF).
 ]
 Child[PID=65245]: End of reading.
 Parent[PID=65199]: Exiting estartable_syscall_test()

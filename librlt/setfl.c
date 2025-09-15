@@ -16,6 +16,7 @@ void set_fl(int fd, int flags) { /* flags are file status flags to turn on */
 
 
 #ifdef test_setfl
+#undef test_setfl
 #include <assert.h>
 #include <fcntl.h>
 #include <unistd.h>

@@ -1,4 +1,7 @@
 #include <assert.h>
+#include <stdio.h>
+#include <string.h>
+#include <signal.h>
 
 /*
  * Get the number of arguments for INLINE_SYSCALL_CALL(name, arg1, arg2, …)
@@ -25,7 +28,16 @@ void variadic_macro_argument_counting_test()
   assert(0 == _COUNT_ARGS());
 }
 
+#define sig2str(sig) #sig
+
+void macro_num2str_test()
+{
+  assert(strcmp("SIGHUP", sig2str(SIGHUP)) == 0);
+  assert(strcmp("SIGINT", sig2str(SIGINT)) == 0);
+}
+
 int main() {
     variadic_macro_argument_counting_test();
+    macro_num2str_test();
     return 0;
 }

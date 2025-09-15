@@ -1,10 +1,9 @@
 #include <errno.h>
-#include <signal.h>
 #include <stdio.h>
-#include <sys/errno.h>
-#include <sys/signal.h>
+#include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
+
 #include "rltapue.h"
 
 static const int CHILD_COUNT = 5;
@@ -26,12 +25,11 @@ void sigchld(int signo) {
 int main(int argc, char *argv[]) {
   // sa_flags = 0, sa_handler / sigaction = NULL, sa_mask = 0
   struct sigaction act_chld = {0};
-  sigemptyset(&act_chld.sa_mask); // For portability of sigset_t
+  sigemptyset(&act_chld.sa_mask);  // For portability of sigset_t
   act_chld.sa_handler = sigchld;
   if (sigaction(SIGCHLD, &act_chld, NULL) < 0) {
     my_perror("error: sigaction");
   }
-
 
   for (int i = 0; i < CHILD_COUNT; i++) {
     pid_t pid;
@@ -39,7 +37,7 @@ int main(int argc, char *argv[]) {
       my_perror("error: fork()");
     } else if (pid == 0) {
       printf("Child(%d): Enter >>>\n", getpid());
-      sleep(i+1);
+      sleep(i + 1);
       printf("Child(%d): Exit <<<\n", getpid());
       exit(0);
     }
@@ -47,7 +45,7 @@ int main(int argc, char *argv[]) {
 
   while (live_children > 0) {
     pause();
-    printf ("Main: pause() was interrupted and now returned.\n");
+    printf("Main: pause() was interrupted and now returned.\n");
   }
   return 0;
 }

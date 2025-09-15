@@ -27,6 +27,7 @@ int get_ft(const char *p, char **type) {
 }
 
 #ifdef test_ft
+#undef test_ft
 #include <stddef.h>
 #include <stdio.h>
 int main(int argc, char *argv[])

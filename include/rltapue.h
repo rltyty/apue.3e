@@ -1,7 +1,6 @@
 #ifndef _RLTAPUE_H
 #define _RLTAPUE_H
-// #include <sys/types.h>
-#include "apue.h"
+#include <signal.h>
 
 /* simple stack */
 #define push(sp, n) (*((sp)++)) = (n)
@@ -12,6 +11,7 @@
 #define MIN(a, b) ((a) <= (b) ? (a) : (b))
 
 /* print error message */
+void my_perror_ret(const char*, ...);
 void my_perror(const char*, ...);
 void my_perr_dump(const char*, ...);
 
@@ -62,6 +62,12 @@ char *pidstr(pid_t);
 /* show ps info */
 void ps(pid_t);
 
+/* parent/child from {Sec race_conditions} */
+void TELL_WAIT(void);
+void TELL_PARENT(pid_t);
+void TELL_CHILD(pid_t);
+void WAIT_PARENT(void);
+void WAIT_CHILD(void);
 
 #endif /* _RLTAPUE_H */
 

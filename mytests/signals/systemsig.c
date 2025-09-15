@@ -1,8 +1,8 @@
-#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/signal.h>
+#include <unistd.h>
+
 #include "rltapue.h"
 
 /**
@@ -46,17 +46,14 @@ hello
 ?                                             <-- `ed` is in command mode
 a                                             <-- needs `a` to resume appending
 你好
-Caught signal[30]=User defined signal 1: 30   <-- kill -USR1 89613, received by parent
-Ciao
+Caught signal[30]=User defined signal 1: 30   <-- kill -USR1 89613, received by
+parent Ciao
 .
 w out
 18
 q
-^CCaught signal[2]=Interrupt: 2               <-- <CTRL-C> to interrupt parent pause()
-> cat out
-hello
-你好
-Ciao
+^CCaught signal[2]=Interrupt: 2               <-- <CTRL-C> to interrupt parent
+pause() > cat out hello 你好 Ciao
 >
 
 # Terminal B:

@@ -14,6 +14,7 @@ double timeit(void (*f)(), int loop) {
 /* Unit test */
 
 #ifdef test_profiling
+#undef test_profiling
 #include <stdio.h>
 void f1() { printf("Hello, world\n"); }
 void f2() {

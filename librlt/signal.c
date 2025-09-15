@@ -70,3 +70,8 @@ void pr_mask2(const char *str, sigset_t *set) {
 
   printf("\n");
 }
+
+#ifdef test_signal
+#undef test_signal
+int main(void) { return 0; }
+#endif

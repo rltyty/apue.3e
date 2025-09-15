@@ -37,6 +37,7 @@ long open_max(void) {
 }
 
 #ifdef test_openmax
+#undef test_openmax
 #include <stdio.h>
 int main(void) {
   printf("open_max()=%ld\n", open_max());

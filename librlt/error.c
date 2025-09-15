@@ -8,6 +8,14 @@
 static void	err_doit(int, int, const char *, va_list);
 static void	perr_doit(const char *, va_list);
 
+void my_perror_ret(const char *fmt, ...) {
+  va_list     ap;
+
+  va_start(ap, fmt);
+  perr_doit(fmt, ap);
+  va_end(ap);
+}
+
 void my_perror(const char *fmt, ...) {
   va_list     ap;
 
@@ -40,7 +48,7 @@ perr_doit(const char *fmt, va_list ap)
 }
 
 
-// ---------------- apue.h copy-----------------------
+/* -------------------- copy ../lib/error.c -------------------- */
 
 /*
  * Nonfatal error related to a system call.
@@ -167,8 +175,9 @@ err_doit(int errnoflag, int error, const char *fmt, va_list ap)
 }
 
 #ifdef test_error
+#undef test_error
 void test_my_perror(void) {
-  my_perror("Test from test_my_perror()");
+  errno = EBADF;
   my_perror("My favourite football player: %s, football team: %s",
       "Lionel Messi", "Argentina");
 }

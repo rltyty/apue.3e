@@ -23,3 +23,12 @@ int add_path(char *path)
   }
   return 0;
 }
+
+#ifdef test_add_path
+#undef test_add_path        // avoid conflict between macro and func
+void test_add_path(void) {}
+int main(void) {
+  test_add_path();
+  return 0;
+}
+#endif

@@ -1,5 +1,7 @@
-#include <signal.h>
-#include <sys/signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
 #include "rltapue.h"
 
 void sig_intr(int);
@@ -8,12 +10,11 @@ void sig_usr1(int);
 static volatile int intr_flag = 0;
 
 int main(int argc, char *argv[]) {
-
-  printf ("Let's examine how the signal mask of the process is changed:\n\n");
+  printf("Let's examine how the signal mask of the process is changed:\n\n");
 
   struct sigaction act, oact;
   sigemptyset(&act.sa_mask); /* Initialize sa_mask to empty */
-  act.sa_flags = 0;           /* Set flags to 0 for default behavior */
+  act.sa_flags = 0;          /* Set flags to 0 for default behavior */
   act.sa_handler = sig_usr1;
   if (sigaction(SIGUSR1, &act, &oact) < 0) {
     my_perror("error: sigaction");
@@ -36,7 +37,7 @@ int main(int argc, char *argv[]) {
   sigprocmask(SIG_SETMASK, &mask, NULL);
   pr_mask("Main: initial setup signal mask after sigprocmask: ");
 
-  while(1) {
+  while (1) {
     pause();
     if (intr_flag == 1) {
       sigemptyset(&mask);
@@ -55,7 +56,7 @@ void sig_intr(int signo) {
   pr_mask("sig_intr: ");
   if (intr_flag == 3) {
     printf("exit(1111)\n");
-    exit(1111); // normal exit: $? = status % 256 = 87
+    exit(1111);  // normal exit: $? = status % 256 = 87
   }
 }
 
@@ -72,7 +73,6 @@ void sig_usr1(int signo) {
   }
 }
 
-
 /*
 
 # Shell A:
@@ -84,12 +84,11 @@ Original signal handler for SIGINT: 0x0
 Main: initial setup signal mask after sigprocmask:  SIGINT SIGQUIT SIGABRT
 ^C^C^Csig_usr1:  SIGINT SIGQUIT SIGUSR1 SIGABRT   <-- kill -USR1 81753
 sig_usr1: change intr_flag to 1
-sig_intr:  SIGINT SIGQUIT SIGABRT                 <-- unblocked pending signal delivered before sigprocmask returns
-Main: after sigprocmask, unblock SIGINT:  SIGQUIT SIGABRT
-Main:  SIGQUIT SIGABRT
-^Csig_intr:  SIGINT SIGQUIT SIGABRT               <-- avoid re-entrancy issue during the time of execution a handler
-Main:  SIGQUIT SIGABRT
-sig_usr1:  SIGQUIT SIGUSR1 SIGABRT                <-- kill -USR1 81753
+sig_intr:  SIGINT SIGQUIT SIGABRT                 <-- unblocked pending signal
+delivered before sigprocmask returns Main: after sigprocmask, unblock SIGINT:
+SIGQUIT SIGABRT Main:  SIGQUIT SIGABRT ^Csig_intr:  SIGINT SIGQUIT SIGABRT <--
+avoid re-entrancy issue during the time of execution a handler Main:  SIGQUIT
+SIGABRT sig_usr1:  SIGQUIT SIGUSR1 SIGABRT                <-- kill -USR1 81753
 sig_usr1: change intr_flag to 3
 Main:  SIGQUIT SIGABRT
 ^Csig_intr:  SIGINT SIGQUIT SIGABRT

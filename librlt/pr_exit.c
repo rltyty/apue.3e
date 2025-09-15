@@ -20,3 +20,12 @@ pr_exit(int status)
 		printf("child stopped, signal number = %d\n",
 				WSTOPSIG(status));
 }
+
+#ifdef test_pr_exit
+#undef test_pr_exit
+void test_pr_exit(void) {}
+int main(void) {
+  test_pr_exit();
+  return 0;
+}
+#endif
