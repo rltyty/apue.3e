@@ -55,6 +55,7 @@ typedef void Sigfunc(int);
 #define SIG_NAME_SET_SIZE 512
 void pr_mask(const char *);
 void pr_mask2(const char *, sigset_t *);
+void pr_mask3(const char *, sigset_t);
 
 /* convert pid_t to string */
 char *pidstr(pid_t);

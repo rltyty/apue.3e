@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/signal.h>
 #include <sys/wait.h>
 
 #include "rltapue.h"
@@ -46,32 +45,64 @@ void pr_mask(const char *str) {
   if (sigprocmask(0, NULL, &set) < 0) {
     err_ret("sigprocmask error");
   } else {
-    pr_mask2(str, &set);
+    pr_mask3(str, set);
   }
   errno = errno_save; /* restore errno */
 }
 
-void pr_mask2(const char *str, sigset_t *set) {
+void pr_mask2(const char *str, sigset_t *mask) {
   printf("%s", str);
-  if (sigismember(set, SIGINT)) printf(" SIGINT");
-  if (sigismember(set, SIGQUIT)) printf(" SIGQUIT");
-  if (sigismember(set, SIGUSR1)) printf(" SIGUSR1");
-  if (sigismember(set, SIGUSR2)) printf(" SIGUSR2");
-  if (sigismember(set, SIGALRM)) printf(" SIGALRM");
-  if (sigismember(set, SIGABRT)) printf(" SIGABRT");
-  if (sigismember(set, SIGTSTP)) printf(" SIGTSTP");
-  if (sigismember(set, SIGCHLD)) printf(" SIGCHLD");
+  if (sigismember(mask, SIGINT)) printf(" SIGINT");
+  if (sigismember(mask, SIGQUIT)) printf(" SIGQUIT");
+  if (sigismember(mask, SIGUSR1)) printf(" SIGUSR1");
+  if (sigismember(mask, SIGUSR2)) printf(" SIGUSR2");
+  if (sigismember(mask, SIGALRM)) printf(" SIGALRM");
+  if (sigismember(mask, SIGABRT)) printf(" SIGABRT");
+  if (sigismember(mask, SIGTSTP)) printf(" SIGTSTP");
+  if (sigismember(mask, SIGCHLD)) printf(" SIGCHLD");
 
   // this two are never blocked
-  if (sigismember(set, SIGKILL)) printf(" SIGKILL");
-  if (sigismember(set, SIGSTOP)) printf(" SIGSTOP");
+  if (sigismember(mask, SIGKILL)) printf(" SIGKILL");
+  if (sigismember(mask, SIGSTOP)) printf(" SIGSTOP");
 
   /* remaining signals can go here  */
 
   printf("\n");
 }
 
+void pr_mask3(const char *str, sigset_t mask) {
+  printf("%s: ", str);
+  while (mask > 0) {
+    sigset_t lsb = -mask & mask; // find least significant bit (the rightmost 1)
+    int signo = __builtin_ctzl(lsb) + 1; // use GCC/Clang count trailing zeros
+    printf("|%s|, ", strsignal(signo));
+    sigdelset(&mask, signo);
+  }
+  printf("\n");
+}
+
+
 #ifdef test_signal
 #undef test_signal
-int main(void) { return 0; }
+int main(void) { 
+  sigset_t mask, old;
+  sigemptyset(&mask);
+
+  int signals[] = {SIGUSR1, SIGUSR2, SIGABRT, SIGCONT, SIGTSTP, SIGSTOP};
+  for (int i = 0; i < sizeof(signals) / sizeof(int); i++) {
+    sigaddset(&mask, signals[i]);
+  }
+  sigemptyset(&old);
+  sigprocmask(SIG_SETMASK, &mask, &old);
+  pr_mask3("Current blocked signals", mask);
+  sigprocmask(SIG_SETMASK, &old, NULL);
+
+  pr_sep('-', 60);
+
+  sigfillset(&mask);
+  sigprocmask(SIG_SETMASK, &mask, &old);
+  pr_mask("Current blocked signals");
+  sigprocmask(SIG_SETMASK, &old, NULL);
+  return 0;
+}
 #endif

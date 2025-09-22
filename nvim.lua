@@ -1,3 +1,5 @@
+if vim.g.vimrclevel <= 1 then return end
+
 local map = vim.keymap.set
 
 map('n', '<leader>mk', '<Cmd>make -j$(nproc) BUILD=Release -s<CR>', { noremap = true })

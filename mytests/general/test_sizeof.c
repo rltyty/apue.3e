@@ -1,7 +1,10 @@
 #include <assert.h>
+#include <limits.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <wchar.h>
 
 #pragma clang diagnostic ignored "-Wsizeof-array-decay"
 #pragma clang diagnostic ignored "-Wsizeof-array-argument"
@@ -26,19 +29,38 @@ void test_char_arr(void) {
   char a[] = "12345\n";
   assert(sizeof(a) == 7);  // include hidden '\0' at the end of the string
   assert(strlen(a) == 6);  // exclude hidden '\0'
-  printf("%s", a);
+  // printf("%s", a);
 
   char b[10] = "12345\n";   // partial initialization with padding zeros
   assert(sizeof(b) == 10);  // "12345\n0000"
   assert(strlen(b) == 6);
-  printf("%s", b);
+  // printf("%s", b);
 }
 
 void test_string(void) { assert(7 == sizeof("12345\n")); }
 
+void test_misc(void) {
+  assert(4 == sizeof(sigset_t));
+  assert(8 == CHAR_BIT);
+}
+
+void basic_type_test(void) {
+  assert(1 == sizeof(char));
+  assert(4 == sizeof(wchar_t));
+
+  assert(4 == sizeof(int));
+  assert(2 == sizeof(short));
+  assert(8 == sizeof(long));
+
+  assert(4 == sizeof(float));
+  assert(8 == sizeof(double));
+}
+
 int main(void) {
+  basic_type_test();
   test_char_arr();
   test_string();          // "string" is a '\0' terminated char sequence
+  test_misc();
 
   char arr[108];
   char *ptr = arr;
