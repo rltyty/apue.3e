@@ -1,101 +1,53 @@
-#include <errno.h>
 #include <limits.h>
 #include <signal.h>
-#include <stdio.h>
-#include <string.h>
-#include <sys/_types/_sigset_t.h>
-#include <sys/signal.h>
 
 #include "rltapue.h"
 
-void pr_mask2_Ex10_9(const char *str, sigset_t mask) {
-  printf("%s: ", str);
-  while (mask > 0) {
-    sigset_t lsb = -mask & mask; // find the least significant bit (the rightmost 1)
-    int signo = __builtin_ctzl(lsb) + 1; // GCC/Clang builtin: count trailing zeros
-    printf("|%s|, ", strsignal(signo));
-    sigdelset(&mask, signo);
-  }
-  printf("\n");
-}
-
-void pr_mask_Ex10_9(const char *str) {
-  sigset_t mask;
-  if (sigprocmask(0, NULL, &mask) < 0) {
-    my_perror("error: sigprocmask");
-  } else {
-    pr_mask2_Ex10_9(str, mask);
-  }
-}
-
-void test_pr_mask() {
-  sigset_t mask, old;
-  sigfillset(&mask);
-  sigemptyset(&old);
-  sigprocmask(SIG_SETMASK, &mask, &old);
-  pr_mask("pr_mask:");
-  sigprocmask(SIG_SETMASK, &old, NULL);
-}
-
-void Ex10_9_pr_mask_test1() {
-  sigset_t mask, old;
-  sigfillset(&mask);
-  sigemptyset(&old);
-  sigprocmask(SIG_SETMASK, &mask, &old);
-  pr_mask_Ex10_9("pr_mask");
-  sigprocmask(SIG_SETMASK, &old, NULL);
-}
-
-void Ex10_9_pr_mask_test2() {
-  sigset_t mask, old;
+int main(void) {
+  sigset_t mask, new, old;
   sigemptyset(&mask);
+  sigemptyset(&new);
   sigemptyset(&old);
 
-  int signals[] = {SIGUSR1, SIGUSR2, SIGABRT, SIGCONT, SIGTSTP, SIGSTOP};
+  /* Test 1: Block 6 signals */
+  int signals[] = {SIGUSR1, SIGUSR2, SIGABRT, SIGCONT, SIGKILL, SIGSTOP};
   for (int i = 0; i < sizeof(signals) / sizeof(int); i++) {
     sigaddset(&mask, signals[i]);
   }
+  pr_mask3("Set these signals blocked", mask);
   sigprocmask(SIG_SETMASK, &mask, &old);
-  pr_mask_Ex10_9("pr_mask");
+  pr_mask("Current blocked signals");
   sigprocmask(SIG_SETMASK, &old, NULL);
-}
 
-void Ex10_9_pr_mask_test3()
-{
-  sigset_t mask, old;
-  sigemptyset(&mask);
-  sigemptyset(&old);
-  int signals[] = {SIGVTALRM, SIGPROF, SIGXCPU, SIGTTIN, SIGTTOU, SIGWINCH};
-  for (int i = 0; i < sizeof(signals) / sizeof(int); i++) {
-    sigaddset(&mask, signals[i]);
-  }
+  pr_sep('-', 60);
+
+  /* Test 2: Block 6 signals */
+  sigfillset(&mask);
+  pr_mask3("Set all signals blocked", mask);
   sigprocmask(SIG_SETMASK, &mask, &old);
-  pr_mask("Current blocked signals: ");
+  pr_mask("Current blocked signals");
   sigprocmask(SIG_SETMASK, &old, NULL);
-}
-
-int main(int argc, char *argv[]) {
-  test_pr_mask();
-  Ex10_9_pr_mask_test1();
-  Ex10_9_pr_mask_test2();
-  Ex10_9_pr_mask_test3();
   return 0;
 }
 
 /*
 
-:!Debug/signals/Ex10_9_prmask
-[No write since last change]
-pr_mask:: |Hangup: 1|, |Interrupt: 2|, |Quit: 3|, |Illegal instruction: 4|, |Trace/BPT trap: 5|, |Abort trap: 6|, |EMT trap: 7|, |Floating point exception: 8|, |Bus error: 10|, |Segmentation fault: 11|,
-|Bad system call: 12|, |Broken pipe: 13|, |Alarm clock: 14|, |Terminated: 15|, |Urgent I/O condition: 16|, |Suspended: 18|, |Continued: 19|, |Child exited: 20|, |Stopped (tty input): 21|, |Stopped (tty o
-utput): 22|, |I/O possible: 23|, |Cputime limit exceeded: 24|, |Filesize limit exceeded: 25|, |Virtual timer expired: 26|, |Profiling timer expired: 27|, |Window size changes: 28|, |Information request:
-29|, |User defined signal 1: 30|, |User defined signal 2: 31|, |Unknown signal: 32|,
-pr_mask: |Hangup: 1|, |Interrupt: 2|, |Quit: 3|, |Illegal instruction: 4|, |Trace/BPT trap: 5|, |Abort trap: 6|, |EMT trap: 7|, |Floating point exception: 8|, |Bus error: 10|, |Segmentation fault: 11|, |
-Bad system call: 12|, |Broken pipe: 13|, |Alarm clock: 14|, |Terminated: 15|, |Urgent I/O condition: 16|, |Suspended: 18|, |Continued: 19|, |Child exited: 20|, |Stopped (tty input): 21|, |Stopped (tty ou
-tput): 22|, |I/O possible: 23|, |Cputime limit exceeded: 24|, |Filesize limit exceeded: 25|, |Virtual timer expired: 26|, |Profiling timer expired: 27|, |Window size changes: 28|, |Information request: 2
-9|, |User defined signal 1: 30|, |User defined signal 2: 31|, |Unknown signal: 32|,
-pr_mask: |Abort trap: 6|, |Suspended: 18|, |Continued: 19|, |User defined signal 1: 30|, |User defined signal 2: 31|,
-Current blocked signals: : |Stopped (tty input): 21|, |Stopped (tty output): 22|, |Cputime limit exceeded: 24|, |Virtual timer expired: 26|, |Profiling timer expired: 27|, |Window size changes: 28|,
+On Debian 12 Linux:
+
+➜  mytests git:(main) ✗ ./Debug/signals/Ex10_9_prmask
+Set these signals blocked:
+__val[0] = 60b20
+|6:Aborted|, |9:Killed|, |10:User defined signal 1|, |12:User defined signal 2|, |18:Continued|, |19:Stopped (signal)|,
+Current blocked signals:
+__val[0] = 20a20                  <-- sigprocmask() won't block 9:KILL, 19:STOP
+|6:Aborted|, |10:User defined signal 1|, |12:User defined signal 2|, |18:Continued|,
+------------------------------------------------------------
+Set all signals blocked:
+__val[0] = fffffffe7fffffff       <-- sigsetfill() clear 32, 33
+|1:Hangup|, |2:Interrupt|, |3:Quit|, |4:Illegal instruction|, |5:Trace/breakpoint trap|, |6:Aborted|, |7:Bus error|, |8:Floating point exception|, |9:Killed|, |10:User defined signal 1|, |11:Segmentation fault|, |12:User defined signal 2|, |13:Broken pipe|, |14:Alarm clock|, |15:Terminated|, |16:Stack fault|, |17:Child exited|, |18:Continued|, |19:Stopped (signal)|, |20:Stopped|, |21:Stopped (tty input)|, |22:Stopped (tty output)|, |23:Urgent I/O condition|, |24:CPU time limit exceeded|, |25:File size limit exceeded|, |26:Virtual timer expired|, |27:Profiling timer expired|, |28:Window changed|, |29:I/O possible|, |30:Power failure|, |31:Bad system call|, |34:Real-time signal 0|, |35:Real-time signal 1|, |36:Real-time signal 2|, |37:Real-time signal 3|, |38:Real-time signal 4|, |39:Real-time signal 5|, |40:Real-time signal 6|, |41:Real-time signal 7|, |42:Real-time signal 8|, |43:Real-time signal 9|, |44:Real-time signal 10|, |45:Real-time signal 11|, |46:Real-time signal 12|, |47:Real-time signal 13|, |48:Real-time signal 14|, |49:Real-time signal 15|, |50:Real-time signal 16|, |51:Real-time signal 17|, |52:Real-time signal 18|, |53:Real-time signal 19|, |54:Real-time signal 20|, |55:Real-time signal 21|, |56:Real-time signal 22|, |57:Real-time signal 23|, |58:Real-time signal 24|, |59:Real-time signal 25|, |60:Real-time signal 26|, |61:Real-time signal 27|, |62:Real-time signal 28|, |63:Real-time signal 29|, |64:Real-time signal 30|,
+Current blocked signals:
+__val[0] = fffffffe7ffbfeff       <-- sigprocmask() won't block 9:KILL, 19:STOP
+|1:Hangup|, |2:Interrupt|, |3:Quit|, |4:Illegal instruction|, |5:Trace/breakpoint trap|, |6:Aborted|, |7:Bus error|, |8:Floating point exception|, |10:User defined signal 1|, |11:Segmentation fault|, |12:User defined signal 2|, |13:Broken pipe|, |14:Alarm clock|, |15:Terminated|, |16:Stack fault|, |17:Child exited|, |18:Continued|, |20:Stopped|, |21:Stopped (tty input)|, |22:Stopped (tty output)|, |23:Urgent I/O condition|, |24:CPU time limit exceeded|, |25:File size limit exceeded|, |26:Virtual timer expired|, |27:Profiling timer expired|, |28:Window changed|, |29:I/O possible|, |30:Power failure|, |31:Bad system call|, |34:Real-time signal 0|, |35:Real-time signal 1|, |36:Real-time signal 2|, |37:Real-time signal 3|, |38:Real-time signal 4|, |39:Real-time signal 5|, |40:Real-time signal 6|, |41:Real-time signal 7|, |42:Real-time signal 8|, |43:Real-time signal 9|, |44:Real-time signal 10|, |45:Real-time signal 11|, |46:Real-time signal 12|, |47:Real-time signal 13|, |48:Real-time signal 14|, |49:Real-time signal 15|, |50:Real-time signal 16|, |51:Real-time signal 17|, |52:Real-time signal 18|, |53:Real-time signal 19|, |54:Real-time signal 20|, |55:Real-time signal 21|, |56:Real-time signal 22|, |57:Real-time signal 23|, |58:Real-time signal 24|, |59:Real-time signal 25|, |60:Real-time signal 26|, |61:Real-time signal 27|, |62:Real-time signal 28|, |63:Real-time signal 29|, |64:Real-time signal 30|,
 
  */
 

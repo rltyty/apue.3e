@@ -1,10 +1,9 @@
 #include <assert.h>
 #include <limits.h>
-#include <signal.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
+#include <signal.h>
 
 #pragma clang diagnostic ignored "-Wsizeof-array-decay"
 #pragma clang diagnostic ignored "-Wsizeof-array-argument"
@@ -40,7 +39,11 @@ void test_char_arr(void) {
 void test_string(void) { assert(7 == sizeof("12345\n")); }
 
 void test_misc(void) {
+#ifdef __APPLE__
   assert(4 == sizeof(sigset_t));
+#elif defined (__linux__)
+  assert(128 == sizeof(sigset_t)); // unsigned long int [16]
+#endif
   assert(8 == CHAR_BIT);
 }
 
@@ -51,6 +54,7 @@ void basic_type_test(void) {
   assert(4 == sizeof(int));
   assert(2 == sizeof(short));
   assert(8 == sizeof(long));
+  assert(8 == sizeof(unsigned long int));
 
   assert(4 == sizeof(float));
   assert(8 == sizeof(double));
