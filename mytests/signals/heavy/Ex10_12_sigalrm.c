@@ -5,6 +5,11 @@
 #include <unistd.h>
 #include "rltapue.h"
 
+/**
+ * Since this program needs a large static allocation, the object and the
+ * linked executable is about 1GB, this is put in a directory named `heavy`
+ * to exclude this code from normal build. Use `ALL=Y` to include this.
+ */
 static char _1GB[1 << 30] = {
   [65] = 'A',
   [97] = 'a',
@@ -34,6 +39,10 @@ int main(int argc, char *argv[]) {
 }
 
 /**
+
+Manual build:
+> clang -std=c23 -I../include -Wall -DMACOS -D_DARWIN_C_SOURCE -D__DARWIN_UNIX03  -DMANUAL_BUILD -O0 -g -MMD -MP -c -o Debug/signals/Ex10_12_sigalrm.o signals/Ex10_12_sigalrm.c
+> clang -L../librlt -o Debug/signals/Ex10_12_sigalrm Debug/signals/Ex10_12_sigalrm.o -lrltapue
 
 On macOS:
 

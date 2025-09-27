@@ -4,11 +4,14 @@ local map = vim.keymap.set
 
 map('n', '<leader>mk', '<Cmd>make -j$(nproc) BUILD=Release -s<CR>', { noremap = true })
 map('n', '<leader>md', '<Cmd>make -j$(nproc) BUILD=Debug <CR>', { noremap = true })
-map('n', '<leader>mt', '<Cmd>make -j$(nproc) BUILD=Debug -s test<CR>', { noremap = true })
+map('n', '<leader>mt', '<Cmd>make -j$(nproc) BUILD=Debug test<CR>', { noremap = true })
 map('n', '<leader>mc', '<Cmd>make -j$(nproc) -s clean<CR>', { noremap = true })
+map('n', '<leader>mm', '<Cmd>make -j$(nproc) -s clean<CR>', { noremap = true })
 
 -- test makefile
 map('n', '<leader>mdt', '<Cmd>make -j$(nproc) BUILD=Debug SHARED=Y VERSION=3<CR>', { noremap = true })
+map('n', '<leader>mK', '<Cmd>make -j$(nproc) BUILD=Release ALL=Y -s<CR>', { noremap = true })
+map('n', '<leader>mD', '<Cmd>make -j$(nproc) BUILD=Debug ALL=Y <CR>', { noremap = true })
 
 -- Refer to $HOME/.local/share/nvim/lazy/mason-nvim-dap.nvim/lua/mason-nvim-dap/mappings/configurations.lua:82
 local prj_dap_c = {
@@ -44,4 +47,4 @@ vim.g.use_prj_tmpl = true
 vim.g.prj_tmpl_root = 'templates'
 
 -- add separator
-map({ 'n', 'v' }, '<leader>zs', '70a-<ESC>', { noremap = true, desc = 'Insert a sep line.' })
+map({ 'n', 'v' }, '<leader>zs', 'O<ESC>70a-<ESC>', { noremap = true, desc = 'Insert a sep line.' })

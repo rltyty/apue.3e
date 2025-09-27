@@ -4,6 +4,9 @@
 EXCLUDE :=
 EXCLUDE_DIRS := .cache .vscode data tmp Debug Release
 
+# EXTRA_TESTS
+EXTRA_TESTS := heavy
+
 # SINGLETONS build, small scenarios mainly for scratch tests which need
 # a separate Makefile to build.
 SINGLETONS = local

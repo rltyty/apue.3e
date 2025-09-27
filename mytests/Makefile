@@ -1,7 +1,8 @@
 # Makefile for mytests.
 #
-# make [BUILD=Debug|Release] [SHARED=Y|N]
+# make [BUILD=Debug|Release] [SHARED=Y|N] [ALL=Y|N]
 # NOTE: `SHARED=Y` means build tests against dynamic shared librltapue
+# `ALL=Y` means build all the tests including those disabled by default
 
 .SECONDEXPANSION:
 ROOT = ..
@@ -14,6 +15,10 @@ include $(ROOT)/Make.defines.$(PLATFORM)
 include ./mytests.inc
 MAIN_SRC_EXCLUDED := $(addprefix -E , $(EXCLUDE_DIRS))
 MAIN_SRC_EXCLUDED += $(addprefix -E , $(SINGLETONS))
+ifeq ($(ALL), Y)
+else
+	MAIN_SRC_EXCLUDED += $(addprefix -E , $(EXTRA_TESTS))
+endif
 
 # # find all c sources using `fd` under "src/"
 # SRCS := $(shell fd -e c $(MAIN_SRC_EXCLUDED) . src)
