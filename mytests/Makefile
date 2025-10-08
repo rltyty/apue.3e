@@ -15,9 +15,15 @@ include $(ROOT)/Make.defines.$(PLATFORM)
 include ./mytests.inc
 MAIN_SRC_EXCLUDED := $(addprefix -E , $(EXCLUDE_DIRS))
 MAIN_SRC_EXCLUDED += $(addprefix -E , $(SINGLETONS))
-ifeq ($(ALL), Y)
-else
+ifneq ($(ALL), Y)
 	MAIN_SRC_EXCLUDED += $(addprefix -E , $(EXTRA_TESTS))
+endif
+
+ifneq ($(PLATFORM), linux)
+	MAIN_SRC_EXCLUDED += $(addprefix -E , linux)
+endif
+ifneq ($(PLATFORM), macos)
+	MAIN_SRC_EXCLUDED += $(addprefix -E , macos)
 endif
 
 # # find all c sources using `fd` under "src/"

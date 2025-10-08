@@ -6,7 +6,6 @@ map('n', '<leader>mk', '<Cmd>make -j$(nproc) BUILD=Release -s<CR>', { noremap = 
 map('n', '<leader>md', '<Cmd>make -j$(nproc) BUILD=Debug <CR>', { noremap = true })
 map('n', '<leader>mt', '<Cmd>make -j$(nproc) BUILD=Debug test<CR>', { noremap = true })
 map('n', '<leader>mc', '<Cmd>make -j$(nproc) -s clean<CR>', { noremap = true })
-map('n', '<leader>mm', '<Cmd>make -j$(nproc) -s clean<CR>', { noremap = true })
 
 -- test makefile
 map('n', '<leader>mdt', '<Cmd>make -j$(nproc) BUILD=Debug SHARED=Y VERSION=3<CR>', { noremap = true })
