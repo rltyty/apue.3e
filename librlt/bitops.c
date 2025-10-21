@@ -3,9 +3,10 @@
 
 /**
  * NOTE:
- * 1. -value = ~value + 1 = ~(value - 1), e.g:
- *    alignDown: & ~pagesize_m1 (or & -pagesize), or floorDiv x pagesize
- *    alignUp  : (+ pagesize_m1) & ~pagesize_m1,  or ceilingDiv x pagesize
+ * 1. -value = ~value + 1 = ~(value - 1).
+ * e.g: Alignment,
+ *    alignDown: &= ~pagesize_m1 (or &= -pagesize). Or floorDiv x pagesize
+ *    alignUp  : += pagesize_m1; &= ~pagesize_m1.   Or ceilingDiv x pagesize
  * 2. All GCC/Clang built-ins - no headers required
  *    int pos1 = __builtin_ffs(x);        // Find First Set (1-based)
  *    int lz = __builtin_clz(x);          // Count Leading Zeros
