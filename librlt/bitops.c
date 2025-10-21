@@ -3,7 +3,9 @@
 
 /**
  * NOTE:
- * 1. -value = ~value + 1 = ~(value - 1)
+ * 1. -value = ~value + 1 = ~(value - 1), e.g:
+ *    alignDown: & ~pagesize_m1 (or & -pagesize), or floorDiv x pagesize
+ *    alignUp  : (+ pagesize_m1) & ~pagesize_m1,  or ceilingDiv x pagesize
  * 2. All GCC/Clang built-ins - no headers required
  *    int pos1 = __builtin_ffs(x);        // Find First Set (1-based)
  *    int lz = __builtin_clz(x);          // Count Leading Zeros
@@ -67,8 +69,8 @@ uint32_t bit_align_down(uint32_t value, uint32_t alignment) {
   return value & -alignment;
 }
 
-#ifdef test_bitopts
-#undef test_bitopts
+#ifdef test_bitops
+#undef test_bitops
 #include <assert.h>
 
 void test_bit_set() {
