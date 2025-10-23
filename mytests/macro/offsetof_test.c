@@ -13,11 +13,12 @@
  *      layout.
  *
  * NOTE: `sizeof` and Data alignment:
- *   - $$\text{sizeof(struct S)} = \sum_{i=1}^{n}(\text{padding}(m_i) + \text{sizeof}(m_i))$$
- *   - $padding(m_i)$ makes the offset of member $m_i$ align with its type's alignment.
- *   - A TYPE with alignment N must be stored at an address that's a multiple of N.
- *   - Data alignment ensures efficient CPU access.
- *   - Typical alignment rules on x86-64 (System V ABI):
+ * - $$\text{sizeof(struct S)} = \sum_{i=1}^{n}(\text{padding\_before}(m_i) + \text{sizeof}(m_i))$$
+ * - $padding\_before(m_i)$: inserted before member $m_i$ to ensure its starting address aligns with its type's alignment.
+ * - $$\text{offset}(m_i) = \text{unaligned\_offset}(m_i) + \text{padding\_before}(m_i)$$
+ * - A TYPE with alignment N must be stored at an address that's a multiple of N.
+ * - Data alignment ensures efficient CPU access.
+ * - Typical alignment rules on x86-64 (System V ABI):
 | Type                            | Size | Alignment                       | Why                                |
 | ------------------------------- | ---- | ------------------------------- | ---------------------------------- |
 | `char`, `int8_t`                | 1 B  | 1 B                             | Can start anywhere                 |
@@ -49,7 +50,7 @@ struct task {
 };
 
 void test_struct_offset() {
-  // use offsetof macro                                      size  offset + padding = offset_adjusted
+  // use offsetof macro                                      size  offset + padding = aligned_offset (adjusted)
   assert(0 == offsetof(struct task, pid));   // sizeof(pid)    4    0
   assert(4 == offsetof(struct task, a));     // sizeof(a)      5    4
   assert(16 == offsetof(struct task, list)); // sizeof(list)   16   9     + 7 = 16
