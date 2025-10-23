@@ -22,6 +22,12 @@ void* test_bool2(void* op) {
   return op;
 }
 
+void test_expression() {
+  assert(5 == 5);
+  assert(1 == (5 == 5));
+  assert(0 == (5 == 5 == 5));     // (5 == 5 == 5) == ((5 == 5) == 5)
+}
+
 int main(void) { 
 
   assert(1);

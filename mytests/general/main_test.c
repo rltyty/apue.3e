@@ -8,8 +8,8 @@ int main(int argc, char* argv[])
 
 /*
  * Test 1:
- * ./test_main
+ * ./main_test
  * 1
- * ./test_main hello world
+ * ./main_test hello world
  * 3
  */

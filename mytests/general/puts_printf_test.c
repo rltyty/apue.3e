@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 /*
 
 # 1. Line-buffered (console): the first two flush their streams line by line
-> ./Debug/general/test_puts_printf 100000 Messi
+> ./Debug/general/puts_printf_test 100000 Messi
 ...
 ...
 Profiling test_puts: 100000 msg:[Messi]: Time used: 0.096289
@@ -73,7 +73,7 @@ Profiling test_printf_no_newline: 100000 msg:[Messi]: Time used: 0.013930
 
 
 # 2. Fully-buffered (redirection to normal file): '\n' doesn't trigger flush
-> ./Debug/general/test_puts_printf 100000 Messi > full
+> ./Debug/general/puts_printf_test 100000 Messi > full
 > tail -3 file
 ...
 Profiling test_puts: 100000 msg:[Messi]: Time used: 0.007696

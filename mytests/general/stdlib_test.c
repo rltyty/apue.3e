@@ -17,11 +17,11 @@ int main(void) {
 }
 
 /*
-:!Debug/general/test_stdlib
+:!Debug/general/stdlib_test
 a[0] = 0, a[1] = 0
 b[0] = 0, b[1] = 0
 
-:!Release/general/test_stdlib
+:!Release/general/stdlib_test
 a[0] = -1085599248, a[1] = -1085599232
 b[0] = 0, b[1] = 0
 

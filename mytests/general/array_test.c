@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 
 /*
 
-:!Debug/general/test_array
+:!Debug/general/array_test
 hello
 world
 !
