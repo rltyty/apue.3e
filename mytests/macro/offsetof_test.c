@@ -12,10 +12,12 @@
  *    - It simply computes the address offset statically from the structure's
  *      layout.
  *
- * NOTE: Data alignment:
- * - A type with alignment N must be stored at an address that’s a multiple of N.
- * - Ensures efficient CPU access.
- * - Typical alignment rules on x86-64 (System V ABI):
+ * NOTE: `sizeof` and Data alignment:
+ *   - $$\text{sizeof(struct S)} = \sum_{i=1}^{n}(\text{padding}(m_i) + \text{sizeof}(m_i))$$
+ *   - $padding(m_i)$ makes member $m_i$ align according to its type's alignment.
+ *   - A TYPE with alignment N must be stored at an address that's a multiple of N.
+ *   - Data alignment ensures efficient CPU access.
+ *   - Typical alignment rules on x86-64 (System V ABI):
 | Type                            | Size | Alignment                       | Why                                |
 | ------------------------------- | ---- | ------------------------------- | ---------------------------------- |
 | `char`, `int8_t`                | 1 B  | 1 B                             | Can start anywhere                 |
