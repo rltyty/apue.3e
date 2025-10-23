@@ -49,15 +49,15 @@ struct task {
 };
 
 void test_struct_offset() {
-  // use offsetof macro                                       size  offset + padding
+  // use offsetof macro                                      size  offset + padding = offset_adjusted
   assert(0 == offsetof(struct task, pid));   // sizeof(pid)    4    0
   assert(4 == offsetof(struct task, a));     // sizeof(a)      5    4
-  assert(16 == offsetof(struct task, list)); // sizeof(list)   16   9     + 7
+  assert(16 == offsetof(struct task, list)); // sizeof(list)   16   9     + 7 = 16
   assert(32 == offsetof(struct task, b));    // sizeof(b)      9    32
-  assert(48 == offsetof(struct task, list2));// sizeof(list2)  16   41    + 7
+  assert(48 == offsetof(struct task, list2));// sizeof(list2)  16   41    + 7 = 48
   assert(64 == offsetof(struct task, buf));  // sizeof(buf)    4096 64
   assert(4160 == offsetof(struct task, c));  // sizeof(c)      1    4160
-                                             // end of struct task: 4161  + 7
+                                             // end of struct task: 4161  + 7 = 4168
                                              // sizeof(task):4168, padding:21
 
   // use glibc/clang syntactic extension
