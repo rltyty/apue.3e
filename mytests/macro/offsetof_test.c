@@ -14,7 +14,7 @@
  *
  * NOTE: `sizeof` and Data alignment:
  *   - $$\text{sizeof(struct S)} = \sum_{i=1}^{n}(\text{padding}(m_i) + \text{sizeof}(m_i))$$
- *   - $padding(m_i)$ makes member $m_i$ align with its type's alignment.
+ *   - $padding(m_i)$ makes the offset of member $m_i$ align with its type's alignment.
  *   - A TYPE with alignment N must be stored at an address that's a multiple of N.
  *   - Data alignment ensures efficient CPU access.
  *   - Typical alignment rules on x86-64 (System V ABI):
